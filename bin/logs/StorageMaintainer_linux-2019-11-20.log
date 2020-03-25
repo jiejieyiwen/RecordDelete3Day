@@ -1,0 +1,228 @@
+
+[[31mERROR[0m] [2019-11-20T14:58:18+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T14:58:18+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-20T14:58:18+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://mj_log:mmdQh%40B3H4VL27ts@192.168.1.60:30008/mj_log?authSource=mj_log&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T14:58:18+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:00:38+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:00:38+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:00:38+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:00:38+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:00:38+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:00:38+08:00] [StorageMaintainer/MongoDB/InitFile.go:25 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:01:57+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:01:57+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:01:57+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:01:57+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:01:57+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:01:57+08:00] [StorageMaintainer/MongoDB/InitFile.go:26 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:02:54+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:54+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:54+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:54+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:02:54+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:54+08:00] [StorageMaintainer/MongoDB/InitFile.go:26 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:02:56+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:56+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:56+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:56+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:02:56+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:02:56+08:00] [StorageMaintainer/MongoDB/InitFile.go:26 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:00+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:00+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:00+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:00+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:00+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:00+08:00] [StorageMaintainer/MongoDB/InitFile.go:26 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:10+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:10+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:10+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:10+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:26+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:26+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:26+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:26+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:33+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:33+08:00] [StorageMaintainer/MongoDB/InitFile.go:26 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:49+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:49+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:49+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:49+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[31mERROR[0m] [2019-11-20T15:03:51+08:00] [iPublic/MongoModular/InitMongo.go:81 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [31mMESSAGE >>>[ Initial MongoDB Conn: credentials must be provided as user:pass@host ][0m
+     ⇲ [31mPARAMS: [[0m [31mURL[0m=mongodb://:@192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [31m][0m
+
+[[36mINFO [0m] [2019-11-20T15:03:51+08:00] [StorageMaintainer/MongoDB/InitFile.go:26 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect Err:[Initial MongoDB Connection Failed! ].  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:04:04+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:04+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:04+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:04+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:06+08:00] [iPublic/MongoModular/InitMongo.go:86 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [36mMESSAGE >>>[ Dail OK.  ][0m
+     ⇲ [36mPARAMS: [[0m [36mURL[0m=mongodb://192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:06+08:00] [StorageMaintainer/MongoDB/InitFile.go:29 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect over.  ][0m
+
+[[31mERROR[0m] [2019-11-20T15:04:21+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:21+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:21+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:21+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:23+08:00] [iPublic/MongoModular/InitMongo.go:86 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [36mMESSAGE >>>[ Dail OK.  ][0m
+     ⇲ [36mPARAMS: [[0m [36mURL[0m=mongodb://192.168.0.56:27017/mj_log?authSource=admin&maxPoolSize=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-20T15:04:23+08:00] [StorageMaintainer/MongoDB/InitFile.go:29 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect over.  ][0m

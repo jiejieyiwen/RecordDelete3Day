@@ -1,0 +1,148 @@
+
+[[31mERROR[0m] [2019-11-27T14:14:06+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T14:14:06+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:14:06+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:14:06+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:14:06+08:00] [iPublic/MongoModular/InitMongo.go:86 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [36mMESSAGE >>>[ Dail OK.  ][0m
+     ⇲ [36mPARAMS: [[0m [36mURL[0m=mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:14:06+08:00] [StorageMaintainer/MongoDB/InitFile.go:36 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect over.  ][0m
+
+[[31mERROR[0m] [2019-11-27T14:15:05+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:05+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:05+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:05+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:05+08:00] [iPublic/MongoModular/InitMongo.go:86 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [36mMESSAGE >>>[ Dail OK.  ][0m
+     ⇲ [36mPARAMS: [[0m [36mURL[0m=mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:05+08:00] [StorageMaintainer/MongoDB/InitFile.go:36 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect over.  ][0m
+
+[[31mERROR[0m] [2019-11-27T14:15:11+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:11+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:11+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:11+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:11+08:00] [iPublic/MongoModular/InitMongo.go:86 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [36mMESSAGE >>>[ Dail OK.  ][0m
+     ⇲ [36mPARAMS: [[0m [36mURL[0m=mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T14:15:11+08:00] [StorageMaintainer/MongoDB/InitFile.go:36 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect over.  ][0m
+
+[[31mERROR[0m] [2019-11-27T15:56:25+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T15:56:25+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-27T15:56:25+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T15:56:25+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T15:56:25+08:00] [iPublic/MongoModular/InitMongo.go:86 [35m=>[0mInitConnectionWithURL()]: 
+     ⇲ [36mMESSAGE >>>[ Dail OK.  ][0m
+     ⇲ [36mPARAMS: [[0m [36mURL[0m=mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T15:56:25+08:00] [StorageMaintainer/MongoDB/InitFile.go:36 [35m=>[0mInit()]: 
+     ⇲ [36mMESSAGE >>>[ Init Mongo Connect over.  ][0m
+
+[[31mERROR[0m] [2019-11-27T17:47:33+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T17:47:33+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:47:33+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:47:33+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[31mERROR[0m] [2019-11-27T17:48:02+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:02+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:02+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:02+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36m][0m
+
+[[31mERROR[0m] [2019-11-27T17:48:08+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:08+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:08+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:08+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[31mERROR[0m] [2019-11-27T17:48:11+08:00] [iPublic/EnvLoad/Config.go:62 [35m=>[0m1()]: 
+     ⇲ [31mMESSAGE >>>[ GetLocalHostName: debian ok.   ][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:11+08:00] [iPublic/EnvLoad/Config.go:98 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ Get AuthConfig Over, UserName: [lzcct] ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:11+08:00] [iPublic/EnvLoad/Config.go:110 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ ServerConfig: {http://192.168.0.56:8761/eureka amqp://guest:guest@192.168.0.56:30001/ amqp://guest:guest@192.168.0.56:30001/ mongodb://192.168.0.56:27017/StorageInfo?authSource=admin&maxPoolSize=100 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5 redis://:B9OxgC3HYg@192.168.0.56:30003/0?PoolSize=5} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
+
+[[36mINFO [0m] [2019-11-27T17:48:11+08:00] [iPublic/EnvLoad/Config.go:116 [35m=>[0mInitConfig()]: 
+     ⇲ [36mMESSAGE >>>[ DataURL: {http://192.168.0.56:8088 https://mojing.sctel.com.cn} ][0m
+     ⇲ [36mPARAMS: [[0m [36mMediaConfig[0m=http://192.168.0.56:8000/imccp-mediacore [36mPriority[0m=0 [36mPriorityLimit[0m=100 [36m][0m
