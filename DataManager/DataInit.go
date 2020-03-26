@@ -14,10 +14,10 @@ import (
 var Size int64
 
 func (pThis *DataManager) Init() error {
+	pThis.logger = LoggerModular.GetLogger()
 	pThis.bRunning = true
 	pThis.bRecicvedGRPCNotify = false
 	pThis.TaskMap = []StorageDaysInfo{}
-	pThis.logger = LoggerModular.GetLogger()
 	pThis.GetNewChannelStorage()
 	return nil
 }
@@ -39,10 +39,8 @@ func (pThis *DataManager) goRefreshPlatformToken() {
 	}
 }
 
+//刷新通道等数据信息
 func (pThis *DataManager) GetNewChannelStorage() {
-	/*
-		刷新通道等数据信息
-	*/
 	//先从redis里面获取所有的channel storage
 	pThis.flushData()
 	rec := Redis.GetRedisRecordManager()
@@ -50,7 +48,7 @@ func (pThis *DataManager) GetNewChannelStorage() {
 	wg.Add(1)
 	go rec.GetChannelStorageInfoFromRedis(&pThis.SliceChannelStorageInfo, "", &wg)
 	wg.Wait()
-	//pThis.logger.Infof("SliceChannelStorageInfo len is: [%v]", len(pThis.SliceChannelStorageInfo))
+
 	//获取所有设备的存储天数
 	lens, err := rec.Srv.Client.HLen("DC_StorageMediumInfo:Data").Result()
 	if err != nil {
@@ -58,10 +56,14 @@ func (pThis *DataManager) GetNewChannelStorage() {
 		return
 	}
 	Size = lens
+	pThis.MapNeedDeleteList = make(map[string][]SDataDefine.RecordFileInfo, Size)
+
 	StorageDaysInfos := pThis.GetAllStorageDays()
+
 	//建立挂载点对列表
 	pThis.MountPointList = make(map[string][]StorageDaysInfo, lens)
 	var tempkey = make(map[string]string, lens)
+
 	for index, stoDay := range StorageDaysInfos {
 		if index == 0 {
 			pThis.TaskMapLock.Lock()
@@ -86,27 +88,6 @@ func (pThis *DataManager) GetNewChannelStorage() {
 		pThis.logger.Infof("Success to Get All Devices' StorageDay~! [%v]", len(pThis.TaskMap))
 	}
 	tempkey = make(map[string]string)
-	//temp := pThis.GetMountPointMap()
-	//pThis.logger.Info(temp)
-}
-
-func (pThis *DataManager) GetOneChannelInfo() (temp StorageDaysInfo) {
-	temp = StorageDaysInfo{}
-	pThis.TaskMapLock.Lock()
-	defer pThis.TaskMapLock.Unlock()
-	if len(pThis.TaskMap) > 0 {
-		temp = pThis.TaskMap[0]
-		pThis.TaskMap = pThis.TaskMap[1:]
-	}
-	return temp
-}
-
-func (pThis *DataManager) GetAllChannelInfo() []StorageDaysInfo {
-	pThis.TaskMapLock.Lock()
-	defer pThis.TaskMapLock.Unlock()
-	a := pThis.TaskMap
-	pThis.TaskMap = []StorageDaysInfo{}
-	return a
 }
 
 func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
@@ -117,17 +98,8 @@ func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
 	return a
 }
 
-func (pThis *DataManager) ClearAllChannelInfo() {
-	pThis.TaskMapLock.Lock()
-	defer pThis.TaskMapLock.Unlock()
-	pThis.TaskMap = []StorageDaysInfo{}
-	return
-}
-
-func (pThis *DataManager) PushNeedDeleteTs(countLimit int) []SDataDefine.RecordFileInfo {
-	/*
-		获取固定长度需要删除的文件信息
-	*/
+//获取固定长度需要删除的文件信息
+func (pThis *DataManager) GetNeedDeleteTs(countLimit int) []SDataDefine.RecordFileInfo {
 	pThis.SliceChannelStorageInfoLock.Lock()
 	defer pThis.SliceChannelStorageInfoLock.Unlock()
 	if len(pThis.NeedDeleteTsList) == 0 {
@@ -144,13 +116,28 @@ func (pThis *DataManager) PushNeedDeleteTs(countLimit int) []SDataDefine.RecordF
 	}
 }
 
-func (pThis *DataManager) PullNeedDeleteTs(ts SDataDefine.RecordFileInfo) {
-	/*
-		将查询到的需要删除的TS文件信息推入
-	*/
+func (pThis *DataManager) GetAllNeedDeleteTs() map[string][]SDataDefine.RecordFileInfo {
+	pThis.MapNeedDeleteListLock.Lock()
+	defer pThis.MapNeedDeleteListLock.Unlock()
+	if len(pThis.MapNeedDeleteList) == 0 {
+		return pThis.MapNeedDeleteList
+	}
+	a := pThis.MapNeedDeleteList
+	pThis.MapNeedDeleteList = make(map[string][]SDataDefine.RecordFileInfo)
+	return a
+}
+
+//将查询到的需要删除的TS文件信息推入
+func (pThis *DataManager) PushNeedDeleteTs(ts SDataDefine.RecordFileInfo) {
 	pThis.SliceChannelStorageInfoLock.Lock()
 	defer pThis.SliceChannelStorageInfoLock.Unlock()
 	pThis.NeedDeleteTsList = append(pThis.NeedDeleteTsList, ts)
+}
+
+func (pThis *DataManager) PushNeedDeleteTsByMountPoints(mountpoint string, ts SDataDefine.RecordFileInfo) {
+	pThis.MapNeedDeleteListLock.Lock()
+	defer pThis.MapNeedDeleteListLock.Unlock()
+	pThis.MapNeedDeleteList[mountpoint] = append(pThis.MapNeedDeleteList[mountpoint], ts)
 }
 
 func (pThis *DataManager) GetNotifyStatus() bool {

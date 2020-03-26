@@ -54,8 +54,8 @@ type DeleteTask struct {
 	m_RevertId     []bson.ObjectId
 	m_RevertIdLock sync.Mutex
 
-	m_mapDeleteByMountPoint     map[string][]StorageMaintainerMessage.StreamResData
-	m_mapDeleteByMountPointLock sync.Mutex
+	m_mapDeleteOnMongoList     map[string]chan StorageMaintainerMessage.StreamResData
+	m_mapDeleteOnMongoListLock sync.Mutex
 }
 
 var dTask DeleteTask
