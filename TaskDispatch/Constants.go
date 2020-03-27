@@ -21,11 +21,23 @@ type DeleteServer struct {
 	m_chResult chan StorageMaintainerMessage.StreamResData
 }
 
+type DeleteServer1 struct {
+	m_pClient *StorageMaintainerGRpcClient.GRpcClient
+}
+
 func NewDeleteServer(strAddr string, nTaskSize int) (*DeleteServer, error) {
 	deleteServer := &DeleteServer{
 		&StorageMaintainerGRpcClient.GRpcClient{},
 		make(chan SDataDefine.RecordFileInfo, nTaskSize),
 		make(chan StorageMaintainerMessage.StreamResData, nTaskSize),
+	}
+	err := deleteServer.m_pClient.GRpcDial(strAddr)
+	return deleteServer, err
+}
+
+func NewDeleteServer1(strAddr string) (*DeleteServer1, error) {
+	deleteServer := &DeleteServer1{
+		&StorageMaintainerGRpcClient.GRpcClient{},
 	}
 	err := deleteServer.m_pClient.GRpcDial(strAddr)
 	return deleteServer, err
@@ -56,6 +68,11 @@ type DeleteTask struct {
 
 	m_mapDeleteOnMongoList     map[string]chan StorageMaintainerMessage.StreamResData
 	m_mapDeleteOnMongoListLock sync.Mutex
+
+	m_mapDeleteServerList     map[string]string
+	m_mapDeleteServerListLock sync.Mutex
+
+	m_chResults chan StorageMaintainerMessage.StreamResData
 }
 
 var dTask DeleteTask
@@ -75,5 +92,12 @@ func (manager *DeleteTask) GetRevertId() []bson.ObjectId {
 	defer manager.m_RevertIdLock.Unlock()
 	temp := manager.m_RevertId
 	manager.m_RevertId = []bson.ObjectId{}
+	return temp
+}
+
+func (manager *DeleteTask) GetDeleteServerList() map[string]string {
+	manager.m_mapDeleteServerListLock.Lock()
+	defer manager.m_mapDeleteServerListLock.Unlock()
+	temp := manager.m_mapDeleteServerList
 	return temp
 }

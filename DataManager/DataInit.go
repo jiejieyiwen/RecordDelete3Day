@@ -19,6 +19,7 @@ func (pThis *DataManager) Init() error {
 	pThis.bRecicvedGRPCNotify = false
 	pThis.TaskMap = []StorageDaysInfo{}
 	pThis.GetNewChannelStorage()
+	pThis.NeedDeleteTsList1 = make(chan SDataDefine.RecordFileInfo, 100)
 	return nil
 }
 
@@ -88,6 +89,7 @@ func (pThis *DataManager) GetNewChannelStorage() {
 		pThis.logger.Infof("Success to Get All Devices' StorageDay~! [%v]", len(pThis.TaskMap))
 	}
 	tempkey = make(map[string]string)
+	//fmt.Println(pThis.TaskMap)
 }
 
 func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
@@ -100,6 +102,23 @@ func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
 
 //获取固定长度需要删除的文件信息
 func (pThis *DataManager) GetNeedDeleteTs(countLimit int) []SDataDefine.RecordFileInfo {
+	pThis.SliceChannelStorageInfoLock.Lock()
+	defer pThis.SliceChannelStorageInfoLock.Unlock()
+	if len(pThis.NeedDeleteTsList) == 0 {
+		return pThis.NeedDeleteTsList
+	}
+	if len(pThis.NeedDeleteTsList) < countLimit {
+		a := pThis.NeedDeleteTsList
+		pThis.NeedDeleteTsList = []SDataDefine.RecordFileInfo{}
+		return a
+	} else {
+		a := pThis.NeedDeleteTsList[:countLimit]
+		pThis.NeedDeleteTsList = pThis.NeedDeleteTsList[countLimit:]
+		return a
+	}
+}
+
+func (pThis *DataManager) GetNeedDeleteTsch(countLimit int) []SDataDefine.RecordFileInfo {
 	pThis.SliceChannelStorageInfoLock.Lock()
 	defer pThis.SliceChannelStorageInfoLock.Unlock()
 	if len(pThis.NeedDeleteTsList) == 0 {
