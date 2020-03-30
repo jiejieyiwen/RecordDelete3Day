@@ -153,6 +153,12 @@ func (pThis *DataManager) PushNeedDeleteTs(ts SDataDefine.RecordFileInfo) {
 	pThis.NeedDeleteTsList = append(pThis.NeedDeleteTsList, ts)
 }
 
+func (pThis *DataManager) PushNeedDeleteTsch(ts SDataDefine.RecordFileInfo) {
+	pThis.NeedDeleteTsList1Lock.Lock()
+	defer pThis.NeedDeleteTsList1Lock.Unlock()
+	pThis.NeedDeleteTsList1 <- ts
+}
+
 func (pThis *DataManager) PushNeedDeleteTsByMountPoints(mountpoint string, ts SDataDefine.RecordFileInfo) {
 	pThis.MapNeedDeleteListLock.Lock()
 	defer pThis.MapNeedDeleteListLock.Unlock()

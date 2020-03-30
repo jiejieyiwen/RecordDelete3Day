@@ -26,12 +26,13 @@ type DataManager struct {
 	SliceChannelStorageInfo     []DataDefine.ChannelStorageInfo
 	SliceChannelStorageInfoLock sync.RWMutex
 
-	TaskMap           []StorageDaysInfo
-	TaskMapLock       sync.RWMutex
-	NeedDeleteTsList  []SDataDefine.RecordFileInfo // TS信息
-	NeedDeleteTsList1 chan SDataDefine.RecordFileInfo
-	PlatformToken     string
-	logger            *logrus.Logger //日志
+	TaskMap               []StorageDaysInfo
+	TaskMapLock           sync.RWMutex
+	NeedDeleteTsList      []SDataDefine.RecordFileInfo // TS信息
+	NeedDeleteTsList1     chan SDataDefine.RecordFileInfo
+	NeedDeleteTsList1Lock sync.Mutex
+	PlatformToken         string
+	logger                *logrus.Logger //日志
 
 	MountPointList     map[string][]StorageDaysInfo //挂载点表
 	MountPointListLock sync.Mutex

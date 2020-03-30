@@ -40,6 +40,7 @@ func main() {
 	} else {
 		TaskDispatch.GetTaskManager().Init()
 	}
+
 	a := make(chan bool)
 	<-a
 }

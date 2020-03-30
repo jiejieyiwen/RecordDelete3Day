@@ -115,13 +115,13 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 					manager.logger.Errorf("Set TsInfo Mongo To Lock 1 [%s], Error:[%v]", k.RecordID, err)
 					continue
 				}
-				t := time.Unix(int64(k.StartTime), 0)
+				t := time.Unix(k.StartTime, 0)
 				date := t.Format("2006-01-02")
 				mapdate[date] = date
-				DataManager.GetDataManager().PushNeedDeleteTs(k)
+				DataManager.GetDataManager().PushNeedDeleteTsch(k)
 				continue
 			}
-			t := time.Unix(int64(k.StartTime), 0)
+			t := time.Unix(k.StartTime, 0)
 			date1 := t.Format("2006-01-02")
 			//不属于同一天的才装进预删除表,并添加到临时表
 			if _, ok := mapdate[date1]; ok == false {
@@ -131,8 +131,17 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 					continue
 				}
 				mapdate[date1] = date1
-				DataManager.GetDataManager().PushNeedDeleteTs(k)
+				DataManager.GetDataManager().PushNeedDeleteTsch(k)
 			} else {
+				//如果挂载点飘了也要装进删除表
+				if mountpoint != k.MountPoint {
+					if err := MongoDB.GetMongoRecordManager().SetTsInfoMongoToLock(k.ID); err != nil {
+						manager.logger.Errorf("Set TsInfo Mongo To Lock 1 [%v], Error:[%v]", k.ChannelInfoID, err)
+						continue
+					}
+					DataManager.GetDataManager().PushNeedDeleteTsch(k)
+					continue
+				}
 				if err := MongoDB.GetMongoRecordManager().SetInfoMongoToDelete(k.ID); err != nil {
 					manager.logger.Errorf("Set TsInfo Mongo To Lock 2 [%s], Error:[%v]", k.RecordID, err)
 					continue
@@ -148,6 +157,31 @@ func (manager *DeleteTask) goconnectDeleteServer() {
 	for manager.bRunning {
 		tsTask := DataManager.GetDataManager().GetNeedDeleteTs(SDataDefine.SingleDealLimit)
 		for _, task := range tsTask {
+			client, strAddr := manager.getRightDeleteServer(task.MountPoint)
+			if client == nil {
+				manager.logger.Errorf("NO DeleteServer to HandleThis MountPoint[%s], ChannelID[%s]", task.MountPoint, task.ChannelInfoID)
+				manager.AddRevertId(task.ID)
+				continue
+			}
+			manager.logger.Infof("链接删除服务器[%s]成功", strAddr)
+			t := time.Unix(task.StartTime, 0)
+			date := t.Format("2006-01-02")
+			pRespon, err := client.m_pClient.Notify(task.ChannelInfoID, task.RecordRelativePath, task.MountPoint, date, task.ID.Hex(), task.StartTime)
+			if nil != err {
+				manager.logger.Errorf("通知删除服务器[%s]失败,err:%v", strAddr, err.Error())
+				manager.AddRevertId(task.ID)
+				continue
+			}
+			manager.logger.Infof("收到删除结果:[%v]", *pRespon)
+			manager.m_chResults <- *pRespon
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
+func (manager *DeleteTask) goconnectDeleteServerch() {
+	for manager.bRunning {
+		for task := range DataManager.GetDataManager().NeedDeleteTsList1 {
 			client, strAddr := manager.getRightDeleteServer(task.MountPoint)
 			if client == nil {
 				manager.logger.Errorf("NO DeleteServer to HandleThis MountPoint[%s], ChannelID[%s]", task.MountPoint, task.ChannelInfoID)
