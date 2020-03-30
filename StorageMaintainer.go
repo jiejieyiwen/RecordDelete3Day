@@ -21,17 +21,18 @@ func main() {
 		logger.Error(err)
 		return
 	}
-
 	//redis
 	if err := Redis.Init(); err != nil {
 		logger.Error(err)
 		return
 	}
 
+	//data
 	if err := DataManager.GetDataManager().Init(); err != nil {
 		logger.Error(err)
 		return
 	}
+
 	//mongo
 	if err := MongoDB.Init(); err != nil {
 		logger.Error(err)
@@ -41,8 +42,4 @@ func main() {
 	}
 	a := make(chan bool)
 	<-a
-	//if err := StorageMaintainerGRpcServer.GetServer().InitServer(); err != nil {
-	//	logger.Error(err)
-	//	return
-	//}
 }
