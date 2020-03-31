@@ -22,7 +22,8 @@ type DeleteServer struct {
 }
 
 type DeleteServer1 struct {
-	m_pClient *StorageMaintainerGRpcClient.GRpcClient
+	m_pClient  *StorageMaintainerGRpcClient.GRpcClient
+	mountpoint string
 }
 
 func NewDeleteServer(strAddr string, nTaskSize int) (*DeleteServer, error) {
@@ -38,6 +39,7 @@ func NewDeleteServer(strAddr string, nTaskSize int) (*DeleteServer, error) {
 func NewDeleteServer1(strAddr string) (*DeleteServer1, error) {
 	deleteServer := &DeleteServer1{
 		&StorageMaintainerGRpcClient.GRpcClient{},
+		strAddr,
 	}
 	err := deleteServer.m_pClient.GRpcDial(strAddr)
 	return deleteServer, err
@@ -46,6 +48,11 @@ func NewDeleteServer1(strAddr string) (*DeleteServer1, error) {
 func CloseDeleteServer(pDeleteServer *DeleteServer) {
 	close(pDeleteServer.m_chTask)
 	close(pDeleteServer.m_chResult)
+}
+
+type DeleteServerInfo struct {
+	Con        *StorageMaintainerGRpcClient.GRpcClient
+	Mountponit string
 }
 
 type DeleteTask struct {
@@ -71,6 +78,9 @@ type DeleteTask struct {
 
 	m_mapDeleteServerList     map[string]string
 	m_mapDeleteServerListLock sync.Mutex
+
+	DeleteServerList     map[string]*DeleteServerInfo
+	DeleteServerListLock sync.Mutex
 
 	m_chResults chan StorageMaintainerMessage.StreamResData
 }

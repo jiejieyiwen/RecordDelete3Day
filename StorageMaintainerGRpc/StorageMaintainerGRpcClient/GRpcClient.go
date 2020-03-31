@@ -5,34 +5,33 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"sync"
+	"iPublic/LoggerModular"
 )
 
 type GRpcClient struct {
 	m_pClientCon *grpc.ClientConn
-	m_sw         sync.WaitGroup
 }
 
 func (pThis *GRpcClient) GRpcDial(strIp string) error {
-
-	//如果已经连接，则断开连接，重新连接
+	logger := LoggerModular.GetLogger()
 	pThis.Close()
 	clientCon, err := grpc.Dial(strIp, grpc.WithInsecure())
 	if err != nil {
+		logger.Errorf("创建 GRPC 链接失败：[%v]", err)
 		return err
 	}
-	//state := clientCon.GetState()
-	//if state != connectivity.Connecting {
-	//	return errors.New("Not Connecting")
-	//}
 	pThis.m_pClientCon = clientCon
-
 	return nil
 }
 
 func (pThis *GRpcClient) Close() {
+	logger := LoggerModular.GetLogger()
 	if nil != pThis.m_pClientCon {
-		pThis.m_pClientCon.Close()
+		err := pThis.m_pClientCon.Close()
+		if err != nil {
+			logger.Errorf("GRPC 链接关闭失败：[%v]", err)
+			return
+		}
 		pThis.m_pClientCon = nil
 	}
 }
@@ -41,8 +40,6 @@ func (pThis *GRpcClient) Notify(strChannelID string, strRelativePath string, str
 	if nil == pThis.m_pClientCon {
 		return nil, errors.New("Client Has No Connected")
 	}
-	pThis.m_sw.Add(1)
-	defer pThis.m_sw.Done()
 	c := StorageMaintainerMessage.NewGreeterClient(pThis.m_pClientCon)
 	req := StorageMaintainerMessage.StreamReqData{
 		StrChannelID:    strChannelID,

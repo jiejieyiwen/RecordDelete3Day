@@ -16,11 +16,12 @@ func init() {
 func main() {
 	logger := LoggerModular.GetLogger()
 
-	conf := EnvLoad.GetConf()
-	if err := conf.InitConfig(); err != nil {
-		logger.Error(err)
-		return
-	}
+	//conf := EnvLoad.GetConf()
+	//if err := conf.InitConfig(); err != nil {
+	//	logger.Error(err)
+	//	return
+	//}
+
 	//redis
 	if err := Redis.Init(); err != nil {
 		logger.Error(err)

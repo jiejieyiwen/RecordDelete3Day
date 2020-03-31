@@ -35,7 +35,7 @@ func Init() error {
 	logger := LoggerModular.GetLogger()
 	conf := EnvLoad.GetConf()
 	//conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@192.168.2.64:27017/mj_log?authSource=admin&maxPoolSize=100"
-	//conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
+	conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
 	if err := MongoModular.GetMongoDBHandlerWithURL(conf.ServerConfig.MongoDBURL, &MongoSrv); err != nil {
 		logger.Errorf("Init Mongo Connect Err:[%v]. ", err)
 		return err

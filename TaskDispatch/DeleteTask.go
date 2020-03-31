@@ -6,6 +6,7 @@ import (
 	"StorageMaintainer1/DataManager"
 	"StorageMaintainer1/MongoDB"
 	"StorageMaintainer1/Redis"
+	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerGRpcClient"
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2/bson"
@@ -15,10 +16,6 @@ import (
 	"time"
 )
 
-/*
-	从DataManager查询需要处理的通道信息，查询相应TS
-*/
-
 func (manager *DeleteTask) Init() {
 	manager.bRunning = true
 	manager.logger = LoggerModular.GetLogger().WithFields(logrus.Fields{})
@@ -27,41 +24,72 @@ func (manager *DeleteTask) Init() {
 	manager.m_mapDeleteOnMongoList = make(map[string]chan StorageMaintainerMessage.StreamResData, DataManager.Size)
 	manager.m_chResults = make(chan StorageMaintainerMessage.StreamResData, 1024)
 
+	manager.DeleteServerList = make(map[string]*DeleteServerInfo)
+	manager.getDeleteServer()
+
 	for !DataManager.CheckNetworkTimeWithNTSC() { //防止服务器时间出问题，取时间时和互联网对时一次，误差超过1小时当次不处理
 		manager.logger.Errorf("Check Time Sync Error, will continue. ")
-		time.Sleep(time.Second * 30)
+		time.Sleep(time.Second * 15)
 	}
 	go manager.gogetDeleteServer()
 
 	go manager.goStartQueryMongoByMountPoint()
 
-	go manager.goconnectDeleteServer()
+	go manager.goSendNotifyToDeleteServer()
+	//
+	//go manager.goGetResults()
+}
 
-	go manager.goGetResults()
+func (manager *DeleteTask) getDeleteServer() {
+	tempDeleteServerList := Redis.GetRedisRecordManager().GetDeleteServerConfig()
+	manager.DeleteServerListLock.Lock()
+	for key, v := range tempDeleteServerList {
+		if manager.DeleteServerList[key] == nil {
+			srv := &DeleteServerInfo{
+				Con:        &StorageMaintainerGRpcClient.GRpcClient{},
+				Mountponit: "",
+			}
+			err := srv.Con.GRpcDial(key)
+			if err != nil {
+				manager.logger.Errorf("Dial Grpc Error: [%v]", err)
+				continue
+			}
+			manager.logger.Infof("DeleteServer Has Connected: [%v]", key)
+			srv.Mountponit = v
+			manager.DeleteServerList[key] = srv
+			continue
+		}
+		manager.logger.Infof("DeleteServer Connection Is OK: [%v]", key)
+	}
+	manager.DeleteServerListLock.Unlock()
 }
 
 func (manager *DeleteTask) gogetDeleteServer() {
 	for manager.bRunning {
-		manager.m_mapDeleteServerListLock.Lock()
-		manager.m_mapDeleteServerList = Redis.GetRedisRecordManager().GetDeleteServerConfig()
-		manager.m_mapDeleteServerListLock.Unlock()
+		tempDeleteServerList := Redis.GetRedisRecordManager().GetDeleteServerConfig()
+		manager.DeleteServerListLock.Lock()
+		for key, v := range tempDeleteServerList {
+			if manager.DeleteServerList[key] == nil {
+				srv := &DeleteServerInfo{
+					Con:        &StorageMaintainerGRpcClient.GRpcClient{},
+					Mountponit: "",
+				}
+				err := srv.Con.GRpcDial(key)
+				if err != nil {
+					manager.logger.Errorf("Dial Grpc Error: [%v]", err)
+					continue
+				}
+				manager.logger.Infof("DeleteServer Has Connected: [%v]", key)
+				srv.Mountponit = v
+				manager.DeleteServerList[key] = srv
+				continue
+			}
+			manager.logger.Infof("DeleteServer Connection Is OK: [%v]", key)
+		}
+		manager.DeleteServerListLock.Unlock()
 		manager.logger.Info("Update DeleteServer Success")
 		time.Sleep(time.Second * 1800)
 	}
-}
-
-func (manager *DeleteTask) getRightDeleteServer(mp string) (*DeleteServer1, string) {
-	server := manager.GetDeleteServerList()
-	for i, v := range server {
-		if strings.Contains(v, mp) {
-			client, err := NewDeleteServer1(i)
-			if err != nil {
-				return nil, i
-			}
-			return client, i
-		}
-	}
-	return nil, ""
 }
 
 func (manager *DeleteTask) goStartQueryMongoByMountPoint() {
@@ -118,7 +146,7 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 				t := time.Unix(k.StartTime, 0)
 				date := t.Format("2006-01-02")
 				mapdate[date] = date
-				DataManager.GetDataManager().PushNeedDeleteTsch(k)
+				DataManager.GetDataManager().PushNeedDeleteTs(k)
 				continue
 			}
 			t := time.Unix(k.StartTime, 0)
@@ -131,7 +159,7 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 					continue
 				}
 				mapdate[date1] = date1
-				DataManager.GetDataManager().PushNeedDeleteTsch(k)
+				DataManager.GetDataManager().PushNeedDeleteTs(k)
 			} else {
 				//如果挂载点飘了也要装进删除表
 				if mountpoint != k.MountPoint {
@@ -139,7 +167,7 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 						manager.logger.Errorf("Set TsInfo Mongo To Lock 1 [%v], Error:[%v]", k.ChannelInfoID, err)
 						continue
 					}
-					DataManager.GetDataManager().PushNeedDeleteTsch(k)
+					DataManager.GetDataManager().PushNeedDeleteTs(k)
 					continue
 				}
 				if err := MongoDB.GetMongoRecordManager().SetInfoMongoToDelete(k.ID); err != nil {
@@ -153,52 +181,44 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 }
 
 //提取需要删除的TS
-func (manager *DeleteTask) goconnectDeleteServer() {
+func (manager *DeleteTask) goSendNotifyToDeleteServer() {
 	for manager.bRunning {
 		tsTask := DataManager.GetDataManager().GetNeedDeleteTs(SDataDefine.SingleDealLimit)
-		for _, task := range tsTask {
-			client, strAddr := manager.getRightDeleteServer(task.MountPoint)
-			if client == nil {
-				manager.logger.Errorf("NO DeleteServer to HandleThis MountPoint[%s], ChannelID[%s]", task.MountPoint, task.ChannelInfoID)
-				manager.AddRevertId(task.ID)
-				continue
-			}
-			manager.logger.Infof("链接删除服务器[%s]成功", strAddr)
-			t := time.Unix(task.StartTime, 0)
-			date := t.Format("2006-01-02")
-			pRespon, err := client.m_pClient.Notify(task.ChannelInfoID, task.RecordRelativePath, task.MountPoint, date, task.ID.Hex(), task.StartTime)
-			if nil != err {
-				manager.logger.Errorf("通知删除服务器[%s]失败,err:%v", strAddr, err.Error())
-				manager.AddRevertId(task.ID)
-				continue
-			}
-			manager.logger.Infof("收到删除结果:[%v]", *pRespon)
-			manager.m_chResults <- *pRespon
-		}
-		time.Sleep(time.Millisecond)
-	}
-}
 
-func (manager *DeleteTask) goconnectDeleteServerch() {
-	for manager.bRunning {
-		for task := range DataManager.GetDataManager().NeedDeleteTsList1 {
-			client, strAddr := manager.getRightDeleteServer(task.MountPoint)
-			if client == nil {
-				manager.logger.Errorf("NO DeleteServer to HandleThis MountPoint[%s], ChannelID[%s]", task.MountPoint, task.ChannelInfoID)
+		strAddr := ""
+		var con *StorageMaintainerGRpcClient.GRpcClient
+
+		manager.DeleteServerListLock.Lock()
+		tempDeleteServer := manager.DeleteServerList
+		manager.DeleteServerListLock.Unlock()
+
+		for _, task := range tsTask {
+			for key, v := range tempDeleteServer {
+				if strings.Contains(task.MountPoint, v.Mountponit) {
+					strAddr = key
+					con = v.Con
+					break
+				}
+			}
+
+			if strAddr == "" && con == nil {
+				manager.logger.Errorf("NO DeleteServer to HandleThis MountPoint:[%s], ChannelID:[%s]", task.MountPoint, task.ChannelInfoID)
 				manager.AddRevertId(task.ID)
 				continue
 			}
-			manager.logger.Infof("链接删除服务器[%s]成功", strAddr)
+
 			t := time.Unix(task.StartTime, 0)
 			date := t.Format("2006-01-02")
-			pRespon, err := client.m_pClient.Notify(task.ChannelInfoID, task.RecordRelativePath, task.MountPoint, date, task.ID.Hex(), task.StartTime)
+
+			pRespon, err := con.Notify(task.ChannelInfoID, task.RecordRelativePath, task.MountPoint, date, task.ID.Hex(), task.StartTime)
+
 			if nil != err {
 				manager.logger.Errorf("通知删除服务器[%s]失败,err:%v", strAddr, err.Error())
 				manager.AddRevertId(task.ID)
 				continue
 			}
 			manager.logger.Infof("收到删除结果:[%v]", *pRespon)
-			manager.m_chResults <- *pRespon
+			//manager.m_chResults <- *pRespon
 		}
 		time.Sleep(time.Millisecond)
 	}
