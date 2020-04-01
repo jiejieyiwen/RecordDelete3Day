@@ -43,10 +43,10 @@ func Init() error {
 	recordManager.Redisurl = "redis://:inphase123.@127.0.0.1:15675/2"
 	err := recordManager.Srv.DaliWithURL(recordManager.Redisurl)
 	if err != nil {
-		logger.Errorf("Init Redis  Failed，addr [%v] ,errors : %v", recordManager.Redisurl, err.Error())
+		logger.Errorf("Init Redis Failed, addr [%v], Error: [%v]", recordManager.Redisurl, err.Error())
 		return err
 	} else {
-		logger.Infof("Init Redis Success!~~")
+		logger.Infof("Init Redis Success: [%v]", recordManager.Redisurl)
 		return nil
 	}
 }

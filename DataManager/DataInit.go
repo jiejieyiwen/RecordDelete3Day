@@ -118,6 +118,18 @@ func (pThis *DataManager) GetNeedDeleteTs(countLimit int) []SDataDefine.RecordFi
 	}
 }
 
+func (pThis *DataManager) GetNeedDeleteTsAll() []SDataDefine.RecordFileInfo {
+	pThis.SliceChannelStorageInfoLock.Lock()
+	defer pThis.SliceChannelStorageInfoLock.Unlock()
+	if len(pThis.NeedDeleteTsList) == 0 {
+		return pThis.NeedDeleteTsList
+	}
+	a := pThis.NeedDeleteTsList
+	pThis.NeedDeleteTsList = []SDataDefine.RecordFileInfo{}
+	return a
+
+}
+
 func (pThis *DataManager) GetNeedDeleteTsch(countLimit int) []SDataDefine.RecordFileInfo {
 	pThis.SliceChannelStorageInfoLock.Lock()
 	defer pThis.SliceChannelStorageInfoLock.Unlock()

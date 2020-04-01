@@ -158,3 +158,10 @@ func (record *RecordFileMongo) DeleteMongoTsInfo(beforeDays int) error {
 	filter := bson.M{"$and": baseFilter}
 	return record.Srv.Delete(record.Table, filter)
 }
+
+func (record *RecordFileMongo) DeleteMongoTsInfoByID(id bson.ObjectId) error {
+	///彻底删除MongoDB记录
+	baseFilter := []interface{}{bson.M{"_id": id}}
+	filter := bson.M{"$and": baseFilter}
+	return record.Srv.Delete(record.Table, filter)
+}

@@ -53,18 +53,13 @@ func CloseDeleteServer(pDeleteServer *DeleteServer) {
 type DeleteServerInfo struct {
 	Con        *StorageMaintainerGRpcClient.GRpcClient
 	Mountponit string
+	task       chan SDataDefine.RecordFileInfo
 }
 
 type DeleteTask struct {
-	bRunning              bool
-	cLock                 sync.Mutex
-	logger                *logrus.Entry
-	m_mapDeleteServer     map[string]*DeleteServer
-	m_mapDeleteServerLock sync.RWMutex
-
-	//						   服务器挂载点  服务器
-	m_mapAllMountPoint     map[string][]string
-	m_mapAllMountPointLock sync.RWMutex
+	bRunning bool
+	cLock    sync.Mutex
+	logger   *logrus.Entry
 
 	m_pDiskPercent *prometheus.GaugeVec
 
@@ -72,9 +67,6 @@ type DeleteTask struct {
 
 	m_RevertId     []bson.ObjectId
 	m_RevertIdLock sync.Mutex
-
-	m_mapDeleteOnMongoList     map[string]chan StorageMaintainerMessage.StreamResData
-	m_mapDeleteOnMongoListLock sync.Mutex
 
 	m_mapDeleteServerList     map[string]string
 	m_mapDeleteServerListLock sync.Mutex
