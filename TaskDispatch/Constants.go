@@ -1,6 +1,7 @@
 package TaskDispatch
 
 import (
+	AMQPModular "AMQPModular2"
 	SDataDefine "StorageMaintainer1/DataDefine"
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerGRpcClient"
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
@@ -75,6 +76,9 @@ type DeleteTask struct {
 	DeleteServerListLock sync.Mutex
 
 	m_chResults chan StorageMaintainerMessage.StreamResData
+
+	m_pMQConn  *AMQPModular.RabbServer //MQ连接
+	m_strMQURL string                  //MQ连接地址
 }
 
 var dTask DeleteTask

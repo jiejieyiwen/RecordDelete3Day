@@ -1,6 +1,7 @@
 package TaskDispatch
 
 import (
+	AMQPModular "AMQPModular2"
 	"StorageMaintainer1/DataDefine"
 	SDataDefine "StorageMaintainer1/DataDefine"
 	"StorageMaintainer1/DataManager"
@@ -8,8 +9,10 @@ import (
 	"StorageMaintainer1/Redis"
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerGRpcClient"
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
+	"encoding/json"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2/bson"
+	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"
 	"strings"
 	"sync"
@@ -19,6 +22,18 @@ import (
 func (manager *DeleteTask) Init() {
 	manager.bRunning = true
 	manager.logger = LoggerModular.GetLogger().WithFields(logrus.Fields{})
+
+	manager.m_pMQConn = new(AMQPModular.RabbServer)
+	conf := EnvLoad.GetConf()
+	conf.ServerConfig.RabbitURL = "amqp://guest:guest@192.168.0.56:30001/"
+	manager.m_strMQURL = conf.ServerConfig.RabbitURL
+	err := AMQPModular.GetRabbitMQServ(manager.m_strMQURL, manager.m_pMQConn)
+	if err != nil {
+		manager.logger.Errorf("initMQ  Failed ,errors : %v", err.Error())
+		return
+	}
+
+	go manager.goGetMQMsg()
 
 	manager.m_chResults = make(chan StorageMaintainerMessage.StreamResData, 1024)
 
@@ -250,9 +265,9 @@ func (manager *DeleteTask) goSend(client *DeleteServerInfo, strAddr string) {
 			//manager.AddRevertId(task.ID)
 			continue
 		}
-		if pRespon != nil {
-			manager.logger.Infof("收到删除结果[%v]成功: [%v]", strAddr, *pRespon)
-			manager.m_chResults <- *pRespon
+		//manager.m_chResults <- *pRespon
+		if pRespon.NRespond == 1 {
+			manager.logger.Infof("成功收到删除服务器[%v]任务[%v]响应", strAddr, *pRespon)
 		}
 	}
 }
@@ -308,4 +323,28 @@ func (manager *DeleteTask) goGetResults() {
 			}
 		}
 	}
+}
+
+func (manager *DeleteTask) goGetMQMsg() {
+	for {
+		queue, _ := manager.m_pMQConn.QueueDeclare("RecordDelete", false, false) // 声明队列, 设置为排他队列，链接断开后自动关闭删除
+		manager.m_pMQConn.AddConsumer("test", queue)                             //添加消费者
+		//只能有一个消费者
+		for _, delivery := range queue.Consumes {
+			manager.logger.Infof("MQ Consumer: %s", "test")
+			manager.m_pMQConn.HandleMessage(delivery, manager.HandleMessage)
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
+func (manager *DeleteTask) HandleMessage(data []byte) error {
+	var msgBody StorageMaintainerMessage.StreamResData
+	err := json.Unmarshal(data, &msgBody)
+	if nil == err {
+		manager.logger.Infof("Received a message: %v", msgBody)
+		manager.m_chResults <- msgBody
+		return nil
+	}
+	return err
 }
