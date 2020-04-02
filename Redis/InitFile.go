@@ -1,11 +1,11 @@
 package Redis
 
 import (
+	"StorageMaintainer1/Config"
 	"StorageMaintainer1/DataDefine"
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	ipublic "iPublic/DataFactory/DataDefine"
-	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"
 	"iPublic/RedisModular"
 	"strings"
@@ -34,13 +34,14 @@ func init() {
 
 func Init() error {
 	logger := LoggerModular.GetLogger()
-	conf := EnvLoad.GetConf()
 	recordManager.Srv = RedisModular.GetRedisPool()
-	recordManager.Redisurl = conf.ServerConfig.RedisURL
+	recordManager.Redisurl = Config.GetConfig().PublicConfig.RedisURL
+
 	//recordManager.Redisurl = "redis://:S0o9l@7&PO@49.234.88.77:8888/7"
 	//recordManager.Redisurl = "redis://:B9OxgC3HYg@192.168.0.56:30003/12"
 	//recordManager.Redisurl = "redis://:inphase123.@192.168.2.64:23680/0"
-	recordManager.Redisurl = "redis://:inphase123.@127.0.0.1:15675/2"
+	//recordManager.Redisurl = "redis://:inphase123.@127.0.0.1:15675/2"
+
 	err := recordManager.Srv.DaliWithURL(recordManager.Redisurl)
 	if err != nil {
 		logger.Errorf("Init Redis Failed, addr [%v], Error: [%v]", recordManager.Redisurl, err.Error())

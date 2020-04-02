@@ -1,6 +1,7 @@
 package main
 
 import (
+	"StorageMaintainer1/Config"
 	"StorageMaintainer1/DataManager"
 	"StorageMaintainer1/MongoDB"
 	"StorageMaintainer1/Redis"
@@ -21,6 +22,11 @@ func main() {
 	//	logger.Error(err)
 	//	return
 	//}
+
+	if err := Config.ReadConfig(); err != nil {
+		logger.Error(err)
+		return
+	}
 
 	//redis
 	if err := Redis.Init(); err != nil {

@@ -1,11 +1,11 @@
 package MongoDB
 
 import (
+	"StorageMaintainer1/Config"
 	"StorageMaintainer1/DataDefine"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"
 	"iPublic/MongoModular"
 	"time"
@@ -33,14 +33,15 @@ func init() {
 
 func Init() error {
 	logger := LoggerModular.GetLogger()
-	conf := EnvLoad.GetConf()
+	MongoDBURL := Config.GetConfig().PublicConfig.MongoDBURL
 	//conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@192.168.2.64:27017/mj_log?authSource=admin&maxPoolSize=100"
-	conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
-	if err := MongoModular.GetMongoDBHandlerWithURL(conf.ServerConfig.MongoDBURL, &MongoSrv); err != nil {
+	//conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
+
+	if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &MongoSrv); err != nil {
 		logger.Errorf("Init Mongo Connect Err:[%v]. ", err)
 		return err
 	} else {
-		logger.Info("Init Mongo Connect over. url : %v ", conf.ServerConfig.MongoDBURL)
+		logger.Info("Init Mongo Connect over. url : %v ", MongoDBURL)
 		recordManager.Srv = MongoSrv
 		return nil
 	}
