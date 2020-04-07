@@ -2,7 +2,7 @@ package TaskDispatch
 
 import (
 	AMQPModular "AMQPModular2"
-	"StorageMaintainer1/Config"
+	"Config"
 	"StorageMaintainer1/DataDefine"
 	SDataDefine "StorageMaintainer1/DataDefine"
 	"StorageMaintainer1/DataManager"
@@ -27,15 +27,16 @@ func (manager *DeleteTask) Init() {
 
 	manager.m_pMQConn = new(AMQPModular.RabbServer)
 
-	//conf.ServerConfig.RabbitURL = "amqp://guest:guest@192.168.0.56:30001/"
-	manager.m_strMQURL = Config.GetConfig().PublicConfig.AMQPURL
-	err := AMQPModular.GetRabbitMQServ(manager.m_strMQURL, manager.m_pMQConn)
-	if err != nil {
-		manager.logger.Errorf("initMQ  Failed ,errors : %v", err.Error())
-		return
-	}
-
-	go manager.goGetMQMsg()
+	//manager.m_strMQURL = Config.GetConfig().PublicConfig.AMQPURL
+	////manager.m_strMQURL = "amqp://guest:guest@192.168.0.56:30001/"
+	//
+	//err := AMQPModular.GetRabbitMQServ(manager.m_strMQURL, manager.m_pMQConn)
+	//if err != nil {
+	//	manager.logger.Errorf("Init MQ Failed, Errors: %v", err.Error())
+	//	return
+	//}
+	//
+	//go manager.goGetMQMsg()
 
 	manager.m_chResults = make(chan StorageMaintainerMessage.StreamResData, 1024)
 
@@ -151,6 +152,7 @@ func (manager *DeleteTask) goStartQueryMongoByMountPoint() {
 
 //mongo中查询需要删除的数据
 func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManager.StorageDaysInfo, wg *sync.WaitGroup) {
+	manager.logger.Infof("开启协程: [%v] ", mountpoint)
 	defer wg.Done()
 	for _, v := range task {
 		startTs, err := DataManager.GetSubDayMorningTimeStamp(v.StorageDays)
@@ -163,14 +165,14 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 		var dbResults []DataDefine.RecordFileInfo
 		err = MongoDB.GetMongoRecordManager().QueryRecord(v.ChannelInfo, startTs, &dbResults, 0)
 		if err != nil {
-			manager.logger.Errorf("Get MongoDB Record Error: [%v], ChannelId: [%v]", err, v.ChannelInfo)
+			manager.logger.Errorf("Get MongoDB Record Error: [%v], ChannelId: [%v], mountpoint: [%v]", err, v.ChannelInfo, mountpoint)
 			continue
 		}
 		if len(dbResults) == 0 {
-			manager.logger.Infof("No DBResult For ChannelID:[%v]", v.ChannelInfo)
+			manager.logger.Infof("No DBResult For ChannelID:[%v], mountpoint: [%v]", v.ChannelInfo, mountpoint)
 			continue
 		}
-		manager.logger.Infof("Get Qualify Data Form MongoDB, len:[%v], ChannelID:[%v]", len(dbResults), v.ChannelInfo)
+		manager.logger.Infof("Get Qualify Data Form MongoDB, len:[%v], ChannelID:[%v], mountpoint: [%v]", len(dbResults), v.ChannelInfo, mountpoint)
 		mapdate := make(map[string]string)
 		mapmp := make(map[string]string)
 		for i, k := range dbResults {

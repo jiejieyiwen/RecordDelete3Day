@@ -22,7 +22,6 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 	pThis.SliceChannelStorageInfoLock.Lock()
 	defer pThis.SliceChannelStorageInfoLock.Unlock()
 	var Result []StorageDaysInfo
-	//var path []string
 	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{})
 	for _, chStorageInfo := range pThis.SliceChannelStorageInfo {
 		schemeInfo, err := GetDataManager().GetStorageSchemeInfoByStorageSchemeID(chStorageInfo.StorageSchemeID)
@@ -39,11 +38,8 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 			pThis.logger.Errorf("Get MountPoint From Redis Error: ChannelID: [%v], error: [%v]", chStorageInfo.ChannelID, err)
 			continue
 		}
-		//path = append(path, mountpoint)
 		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.ChannelID, StorageDays: schemeInfo.StorageDays, Path: mountpoint})
-		///pThis.MountPointList[mountpoint] = append(pThis.MountPointList[mountpoint], Result[0])
 		logger.Infof("Get Channel [%s] Storage Days [%d], MountPonit [%v] ok ", chStorageInfo.ChannelID, schemeInfo.StorageDays, mountpoint)
-		time.Sleep(time.Microsecond)
 	}
 	return Result
 }

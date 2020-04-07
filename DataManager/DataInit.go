@@ -16,10 +16,8 @@ var Size int64
 func (pThis *DataManager) Init() error {
 	pThis.logger = LoggerModular.GetLogger()
 	pThis.bRunning = true
-	pThis.bRecicvedGRPCNotify = false
 	pThis.TaskMap = []StorageDaysInfo{}
 	pThis.GetNewChannelStorage()
-	pThis.NeedDeleteTsList1 = make(chan SDataDefine.RecordFileInfo, 100)
 	return nil
 }
 
@@ -67,16 +65,12 @@ func (pThis *DataManager) GetNewChannelStorage() {
 
 	for index, stoDay := range StorageDaysInfos {
 		if index == 0 {
-			pThis.TaskMapLock.Lock()
-			pThis.TaskMap = append(pThis.TaskMap, stoDay)
-			pThis.TaskMapLock.Unlock()
+			//pThis.TaskMap = append(pThis.TaskMap, stoDay)
 			pThis.MountPointList[stoDay.Path] = append(pThis.MountPointList[stoDay.Path], stoDay)
 			tempkey[stoDay.Path] = stoDay.Path
 			continue
 		}
-		pThis.TaskMapLock.Lock()
-		pThis.TaskMap = append(pThis.TaskMap, stoDay)
-		pThis.TaskMapLock.Unlock()
+		//pThis.TaskMap = append(pThis.TaskMap, stoDay)
 		if _, ok := pThis.MountPointList[stoDay.Path]; !ok {
 			pThis.MountPointList[stoDay.Path] = append(pThis.MountPointList[stoDay.Path], stoDay)
 			tempkey[stoDay.Path] = stoDay.Path
@@ -85,11 +79,11 @@ func (pThis *DataManager) GetNewChannelStorage() {
 			pThis.MountPointList[key] = append(pThis.MountPointList[key], stoDay)
 		}
 	}
-	if len(pThis.TaskMap) != 0 {
-		pThis.logger.Infof("Success to Get All Devices' StorageDay~! [%v]", len(pThis.TaskMap))
+	if len(pThis.MountPointList) != 0 {
+		pThis.logger.Infof("Success to Get All Devices' StorageDay~! [%v]", len(pThis.MountPointList))
 	}
 	tempkey = make(map[string]string)
-	//fmt.Println(pThis.TaskMap)
+	pThis.logger.Infof("MountPointList is: [%v]", pThis.MountPointList)
 }
 
 func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
