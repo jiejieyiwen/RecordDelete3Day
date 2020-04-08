@@ -1,7 +1,6 @@
 package TaskDispatch
 
 import (
-	AMQPModular "AMQPModular2"
 	"Config"
 	"StorageMaintainer1/DataDefine"
 	SDataDefine "StorageMaintainer1/DataDefine"
@@ -25,8 +24,7 @@ func (manager *DeleteTask) Init() {
 	manager.bRunning = true
 	manager.logger = LoggerModular.GetLogger().WithFields(logrus.Fields{})
 
-	manager.m_pMQConn = new(AMQPModular.RabbServer)
-
+	//manager.m_pMQConn = new(AMQPModular.RabbServer)
 	//manager.m_strMQURL = Config.GetConfig().PublicConfig.AMQPURL
 	////manager.m_strMQURL = "amqp://guest:guest@192.168.0.56:30001/"
 	//
@@ -163,7 +161,7 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 			continue
 		}
 		var dbResults []DataDefine.RecordFileInfo
-		err = MongoDB.GetMongoRecordManager().QueryRecord(v.ChannelInfo, startTs, &dbResults, 0)
+		err = MongoDB.GetMongoRecordManager().QueryRecord(v.ChannelInfo, startTs, &dbResults, 1)
 		if err != nil {
 			manager.logger.Errorf("Get MongoDB Record Error: [%v], ChannelId: [%v], mountpoint: [%v]", err, v.ChannelInfo, mountpoint)
 			continue
