@@ -3,11 +3,13 @@ package MongoDB
 import (
 	"Config"
 	"StorageMaintainer1/DataDefine"
+	"StorageMaintainer1/DataManager"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"iPublic/LoggerModular"
 	"iPublic/MongoModular"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -36,9 +38,12 @@ func Init() error {
 	logger := LoggerModular.GetLogger()
 	MongoDBURL := Config.GetConfig().MongoDBConfig.MongoDBURLMongo
 	//conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@192.168.2.64:27017/mj_log?authSource=admin&maxPoolSize=100"
-	//conf.ServerConfig.MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
+	//MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
 	//MongoDBURL := "mongodb://mj_log:SwhRdslmS61A9c3P@10.0.1.220:27017,10.0.1.221:27017,10.0.1.222:27017,10.0.1.223:27017,10.0.1.224:27017/mj_log?authSource=mj_log&maxPoolSize=100"
-	MongoDBURL = strings.Replace(MongoDBURL, "maxPoolSize=10", "maxPoolSize=130", -1)
+	poolsize := "maxPoolSize="
+	s := strconv.Itoa(DataManager.Size)
+	poolsize += s
+	MongoDBURL = strings.Replace(MongoDBURL, "maxPoolSize=10", poolsize, -1)
 	if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &MongoSrv); err != nil {
 		logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
 		return err
@@ -150,21 +155,62 @@ func (record *RecordFileMongo) RevertFailedDelete(id bson.ObjectId) error {
 	return record.Srv.Update(record.Table, filter, apply, Result)
 }
 
-func (record *RecordFileMongo) DeleteMongoTsInfo(beforeDays int) error {
+func (record *RecordFileMongo) SetInfoMongoToDelete1(id, mp string, stime int64) (info *mgo.ChangeInfo, err error) {
+	/*
+		设置为状态为文件删除,
+	*/
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": id}}
+	baseFilter = append(baseFilter, bson.M{"MountPoint": mp})
+	tNow := time.Unix(stime, 0)
+	eTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 0, 1440, 0, 0, time.Local).Unix()
+	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$lt": eTime}})
+	//baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$gte": stime}})
+	filter := bson.M{"$and": baseFilter}
+	apply := mgo.Change{
+		Update: bson.M{
+			"LockStatus": DataDefine.StatusLockToDelete, //设置为删除
+			"DeleteTime": time.Now().Unix()},            //设置个预备删除时间，经过一段时间后，再删除MongoDB数据, 方便前期排错
+		ReturnNew: true,
+		Upsert:    false,
+	}
+	var Result interface{}
+	return record.Srv.Update1(record.Table, filter, apply, Result)
+}
+
+func (record *RecordFileMongo) DeleteMongoTsInfo1(id, mp string, stime int64) error {
 	/*
 		彻底删除MongoDB记录
 	*/
-	tNow := time.Now()
-	DaysAgo := tNow.AddDate(0, 0, -beforeDays)
-	baseFilter := []interface{}{bson.M{"LockStatus": DataDefine.StatusLockToDelete}}
-	baseFilter = append(baseFilter, bson.M{"DeleteTime": bson.M{"$lte": DaysAgo.Unix()}})
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": id}}
+	baseFilter = append(baseFilter, bson.M{"MountPoint": mp})
+	tNow := time.Unix(stime, 0)
+	eTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 0, 1440, 0, 0, time.Local).Unix()
+	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$lt": eTime}})
+	//baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$gte": stime}})
 	filter := bson.M{"$and": baseFilter}
 	return record.Srv.Delete(record.Table, filter)
 }
 
-func (record *RecordFileMongo) DeleteMongoTsInfoByID(id bson.ObjectId) error {
+func (record *RecordFileMongo) DeleteMongoTsInfoByID(id, mp string, stime int64) error {
 	///彻底删除MongoDB记录
-	baseFilter := []interface{}{bson.M{"_id": id}}
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": id}}
+	baseFilter = []interface{}{bson.M{"MountPoint": mp}}
+	tNow := time.Unix(stime, 0)
+	eTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 24, 0, 0, 0, time.UTC)
+	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$lte": eTime}})
+	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$gte": stime}})
 	filter := bson.M{"$and": baseFilter}
 	return record.Srv.Delete(record.Table, filter)
+}
+
+func (record *RecordFileMongo) DeleteMongoTsAll(id, mp string, stime int64) (info *mgo.ChangeInfo, err error) {
+	///彻底删除MongoDB记录
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": id}}
+	baseFilter = append(baseFilter, bson.M{"MountPoint": mp})
+	tNow := time.Unix(stime, 0)
+	eTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 0, 1440, 0, 0, time.Local).Unix()
+	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$lt": eTime}})
+	//baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$gte": stime}})
+	filter := bson.M{"$and": baseFilter}
+	return record.Srv.DeleteAll(record.Table, filter)
 }

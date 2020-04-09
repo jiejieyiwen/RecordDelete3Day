@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var Size int64
+var Size int
 
 func (pThis *DataManager) Init() error {
 	pThis.logger = LoggerModular.GetLogger()
@@ -54,7 +54,7 @@ func (pThis *DataManager) GetNewChannelStorage() {
 		pThis.logger.Errorf("Get DC_StorageMediumInfo:Data Len Failed:[%v]", err)
 		return
 	}
-	Size = lens
+	Size = int(lens)
 	pThis.MapNeedDeleteList = make(map[string][]SDataDefine.RecordFileInfo, Size)
 
 	StorageDaysInfos := pThis.GetAllStorageDays()
@@ -82,8 +82,8 @@ func (pThis *DataManager) GetNewChannelStorage() {
 	if len(pThis.MountPointList) != 0 {
 		pThis.logger.Infof("Success to Get All Devices' StorageDay~! [%v]", len(pThis.MountPointList))
 	}
-	tempkey = make(map[string]string)
-	pThis.logger.Infof("MountPointList is: [%v]", pThis.MountPointList)
+	//tempkey = make(map[string]string)
+	//pThis.logger.Infof("MountPointList is: [%v]", pThis.MountPointList)
 }
 
 func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
