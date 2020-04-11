@@ -2,6 +2,7 @@ package DataManager
 
 import (
 	SDataDefine "StorageMaintainer1/DataDefine"
+	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/sirupsen/logrus"
 	"iPublic/DataFactory"
 	"iPublic/DataFactory/DataDefine"
@@ -12,6 +13,7 @@ type StorageDaysInfo struct {
 	ChannelInfo string
 	StorageDays int
 	Path        string
+	ChanMQ      chan StorageMaintainerMessage.StreamResData
 }
 
 type DataManager struct {
