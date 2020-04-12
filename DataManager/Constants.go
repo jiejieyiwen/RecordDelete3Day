@@ -13,7 +13,6 @@ type StorageDaysInfo struct {
 	ChannelInfo string
 	StorageDays int
 	Path        string
-	ChanMQ      chan StorageMaintainerMessage.StreamResData
 }
 
 type DataManager struct {
@@ -38,6 +37,9 @@ type DataManager struct {
 
 	MountPointList     map[string][]StorageDaysInfo //挂载点表
 	MountPointListLock sync.Mutex
+
+	MountPointMQList     map[string]chan StorageMaintainerMessage.StreamResData //挂载点表
+	MountPointMQListLock sync.Mutex
 
 	MapNeedDeleteList     map[string][]SDataDefine.RecordFileInfo
 	MapNeedDeleteListLock sync.Mutex

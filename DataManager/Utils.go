@@ -2,7 +2,6 @@ package DataManager
 
 import (
 	"StorageMaintainer1/Redis"
-	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"fmt"
 	"github.com/araddon/dateparse"
 	"github.com/sirupsen/logrus"
@@ -39,7 +38,7 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 			pThis.logger.Errorf("Get MountPoint From Redis Error: ChannelID: [%v], error: [%v]", chStorageInfo.ChannelID, err)
 			continue
 		}
-		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.ChannelID, StorageDays: schemeInfo.StorageDays, Path: mountpoint, ChanMQ: make(chan StorageMaintainerMessage.StreamResData, 1024)})
+		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.ChannelID, StorageDays: schemeInfo.StorageDays, Path: mountpoint})
 		logger.Infof("Get Channel [%s] Storage Days [%d], MountPonit [%v] ok ", chStorageInfo.ChannelID, schemeInfo.StorageDays, mountpoint)
 	}
 	return Result
