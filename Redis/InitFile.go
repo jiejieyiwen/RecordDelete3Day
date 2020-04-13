@@ -36,12 +36,7 @@ func Init() error {
 	logger := LoggerModular.GetLogger()
 	recordManager.Srv = RedisModular.GetRedisPool()
 	recordManager.Redisurl = Config.GetConfig().PublicConfig.RedisURL
-
-	//recordManager.Redisurl = "redis://:S0o9l@7&PO@49.234.88.77:8888/7"
-	//recordManager.Redisurl = "redis://:B9OxgC3HYg@192.168.0.56:30003/12"
-	//recordManager.Redisurl = "redis://:inphase123.@192.168.2.64:23680/0"
 	//recordManager.Redisurl = "redis://:inphase123.@127.0.0.1:15675/2"
-	//recordManager.Redisurl = "redis://:R7OxmC3HYg@LocalHost:15789/0?PoolSize=5"
 
 	err := recordManager.Srv.DaliWithURL(recordManager.Redisurl)
 	if err != nil {
@@ -137,20 +132,23 @@ func (record *RecordFileRedis) GetDeleteServerConfig() (pSeverInfo map[string]st
 		record.Logger.Error(pStringSliceCmd.Err().Error())
 		return
 	}
-
 	for _, key := range pStringSliceCmd.Val() {
-
 		strAllMountPoint, err := record.Srv.Get(key)
 		if nil != err {
 			continue
 		}
 		//地址
 		arrStr := strings.Split(key, ":")
-		strServerAddr := arrStr[1] + ":" + arrStr[2]
-
+		strServerAddr := arrStr[1]
+		keys := "Host_DeleteServerManager_"
+		keys += strServerAddr
+		pStringSliceCmd1 := record.Srv.Client.Get(keys)
+		if nil != pStringSliceCmd1.Err() {
+			record.Logger.Error(pStringSliceCmd1.Err().Error())
+			return
+		}
 		//挂载点
-		pSeverInfo[strServerAddr] = strAllMountPoint
-
+		pSeverInfo[pStringSliceCmd1.Val()] = strAllMountPoint
 	}
 	record.Logger.Infof("Get DeleteServerIP Success: [%v]", pSeverInfo)
 	return
