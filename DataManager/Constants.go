@@ -2,6 +2,7 @@ package DataManager
 
 import (
 	SDataDefine "StorageMaintainer1/DataDefine"
+	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/sirupsen/logrus"
 	"iPublic/DataFactory"
 	"iPublic/DataFactory/DataDefine"
@@ -36,6 +37,9 @@ type DataManager struct {
 
 	MountPointList     map[string][]StorageDaysInfo //挂载点表
 	MountPointListLock sync.Mutex
+
+	MountPointMQList     map[string]chan StorageMaintainerMessage.StreamResData //挂载点表
+	MountPointMQListLock sync.Mutex
 
 	MapNeedDeleteList     map[string][]SDataDefine.RecordFileInfo
 	MapNeedDeleteListLock sync.Mutex

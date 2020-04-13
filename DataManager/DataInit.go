@@ -3,6 +3,7 @@ package DataManager
 import (
 	SDataDefine "StorageMaintainer1/DataDefine"
 	"StorageMaintainer1/Redis"
+	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"iPublic/DataFactory/DataDefine"
 	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"
@@ -61,22 +62,26 @@ func (pThis *DataManager) GetNewChannelStorage() {
 
 	//建立挂载点对列表
 	pThis.MountPointList = make(map[string][]StorageDaysInfo, lens)
+	pThis.MountPointMQList = make(map[string]chan StorageMaintainerMessage.StreamResData)
 	var tempkey = make(map[string]string, lens)
 
 	for index, stoDay := range StorageDaysInfos {
 		if index == 0 {
 			//pThis.TaskMap = append(pThis.TaskMap, stoDay)
 			pThis.MountPointList[stoDay.Path] = append(pThis.MountPointList[stoDay.Path], stoDay)
+			pThis.MountPointMQList[stoDay.Path] = make(chan StorageMaintainerMessage.StreamResData, 10240)
 			tempkey[stoDay.Path] = stoDay.Path
 			continue
 		}
 		//pThis.TaskMap = append(pThis.TaskMap, stoDay)
 		if _, ok := pThis.MountPointList[stoDay.Path]; !ok {
 			pThis.MountPointList[stoDay.Path] = append(pThis.MountPointList[stoDay.Path], stoDay)
+			pThis.MountPointMQList[stoDay.Path] = make(chan StorageMaintainerMessage.StreamResData, 10240)
 			tempkey[stoDay.Path] = stoDay.Path
 		} else {
 			key := tempkey[stoDay.Path]
 			pThis.MountPointList[key] = append(pThis.MountPointList[key], stoDay)
+			pThis.MountPointMQList[stoDay.Path] = make(chan StorageMaintainerMessage.StreamResData, 10240)
 		}
 	}
 	if len(pThis.MountPointList) != 0 {
@@ -92,6 +97,13 @@ func (pThis *DataManager) GetMountPointMap() map[string][]StorageDaysInfo {
 	a := pThis.MountPointList
 	pThis.MountPointList = make(map[string][]StorageDaysInfo, 0)
 	return a
+}
+
+func (pThis *DataManager) GetMountPointMQMap() map[string]chan StorageMaintainerMessage.StreamResData {
+	pThis.MountPointMQListLock.Lock()
+	defer pThis.MountPointMQListLock.Unlock()
+	//pThis.MountPointMQList = make(map[string]chan StorageMaintainerMessage.StreamResData, 0)
+	return pThis.MountPointMQList
 }
 
 //获取固定长度需要删除的文件信息

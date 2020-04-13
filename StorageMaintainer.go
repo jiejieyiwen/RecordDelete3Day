@@ -44,6 +44,6 @@ func main() {
 		TaskDispatch.GetTaskManager().Init()
 	}
 
-	a1 := make(chan bool)
-	<-a1
+	a2 := make(chan bool)
+	<-a2
 }
