@@ -27,7 +27,7 @@ func (manager *DeleteTask) Init() {
 
 	manager.m_pMQConn = new(AMQPModular.RabbServer)
 	manager.m_strMQURL = Config.GetConfig().PublicConfig.AMQPURL
-	//manager.m_strMQURL = "amqp://guest:guest@192.168.0.56:30001/"
+	manager.m_strMQURL = "amqp://guest:guest@192.168.0.56:30001/"
 	//manager.m_strMQURL = "amqp://dengyw:dengyw@49.234.88.77:5672/dengyw"
 
 	err := AMQPModular.GetRabbitMQServ(manager.m_strMQURL, manager.m_pMQConn)
@@ -240,22 +240,23 @@ func (manager *DeleteTask) goGetResults() {
 				}
 				manager.logger.Infof("文件删除成功：[%v]", result)
 
-				//t1 := time.Now()
-				//if data, err := MongoDB.GetMongoRecordManager().SetInfoMongoToDelete1(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
-				//	manager.logger.Errorf("Set TS Info On Mongo To Delete Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err)
-				//	//manager.AddRevertId(bson.ObjectIdHex(result.GetStrRecordID()))
-				//} else {
-				//	t2 := time.Now()
-				//	manager.logger.Infof("删除mongo记录成功: [%v], Count: [%v]", result, data, t2.Sub(t1).Milliseconds())
-				//}
-
 				t1 := time.Now()
-				if data, err := MongoDB.GetMongoRecordManager().DeleteMongoTsAll(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
-					manager.logger.Errorf("Delete On Mongo Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err)
+				if data, err := MongoDB.GetMongoRecordManager().SetInfoMongoToDelete1(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
+					t2 := time.Now()
+					manager.logger.Errorf("Set TS Info On Mongo To Delete Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v], 耗时: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err, t2.Sub(t1).Milliseconds())
 				} else {
 					t2 := time.Now()
-					manager.logger.Infof("删除mongo记录成功: [%v], 文件数：[%v], 耗时: [%v]", result, data.Removed, t2.Sub(t1).Milliseconds())
+					manager.logger.Infof("删除mongo记录成功: [%v], Count: [%v]", result, data, t2.Sub(t1).Milliseconds())
 				}
+
+				//t1 := time.Now()
+				//if data, err := MongoDB.GetMongoRecordManager().DeleteMongoTsAll(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
+				//t2 := time.Now()
+				//	manager.logger.Errorf("Delete On Mongo Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v], 耗时: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err, t2.Sub(t1).Milliseconds())
+				//} else {
+				//	t2 := time.Now()
+				//	manager.logger.Infof("删除mongo记录成功: [%v], 文件数：[%v], 耗时: [%v]", result, data.Removed, t2.Sub(t1).Milliseconds())
+				//}
 			}
 		case -1:
 			{
@@ -295,22 +296,22 @@ func (manager *DeleteTask) goGetResultsByMountPoint(mp string, chmq chan Storage
 				}
 				manager.logger.Infof("文件删除成功：[%v], 协程: [%v]", result, mp)
 
-				//t1 := time.Now()
-				//if data, err := MongoDB.GetMongoRecordManager().SetInfoMongoToDelete1(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
-				//	manager.logger.Errorf("Set TS Info On Mongo To Delete Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err)
-				//	//manager.AddRevertId(bson.ObjectIdHex(result.GetStrRecordID()))
-				//} else {
-				//	t2 := time.Now()
-				//	manager.logger.Infof("删除mongo记录成功: [%v], Count: [%v]", result, data, t2.Sub(t1).Milliseconds())
-				//}
-
 				t1 := time.Now()
-				if data, err := MongoDB.GetMongoRecordManager().DeleteMongoTsAll(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
-					manager.logger.Errorf("Delete On Mongo Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v], 协程: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err, mp)
+				if data, err := MongoDB.GetMongoRecordManager().SetInfoMongoToDelete1(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
+					manager.logger.Errorf("Set TS Info On Mongo To Delete Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err)
+					//manager.AddRevertId(bson.ObjectIdHex(result.GetStrRecordID()))
 				} else {
 					t2 := time.Now()
-					manager.logger.Infof("删除mongo记录成功: [%v], 文件数：[%v], 耗时: [%v], 协程: [%v]", result, data.Removed, t2.Sub(t1).Milliseconds(), mp)
+					manager.logger.Infof("删除mongo记录成功: [%v], Count: [%v]", result, data, t2.Sub(t1).Milliseconds())
 				}
+
+				//t1 := time.Now()
+				//if data, err := MongoDB.GetMongoRecordManager().DeleteMongoTsAll(result.StrChannelID, result.StrMountPoint, result.NStartTime); err != nil {
+				//	manager.logger.Errorf("Delete On Mongo Error, ChannelID[%s], ID: [%v], result.StrMountPoint: [%v], NStartTime: [%v], Error: [%v], 协程: [%v]", result.StrChannelID, result.GetStrRecordID(), result.StrMountPoint, result.NStartTime, err, mp)
+				//} else {
+				//	t2 := time.Now()
+				//	manager.logger.Infof("删除mongo记录成功: [%v], 文件数：[%v], 耗时: [%v], 协程: [%v]", result, data.Removed, t2.Sub(t1).Milliseconds(), mp)
+				//}
 			}
 		case -1:
 			{

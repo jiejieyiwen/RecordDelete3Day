@@ -36,7 +36,8 @@ func Init() error {
 	logger := LoggerModular.GetLogger()
 	recordManager.Srv = RedisModular.GetRedisPool()
 	recordManager.Redisurl = Config.GetConfig().PublicConfig.RedisURL
-	//recordManager.Redisurl = "redis://:inphase123.@127.0.0.1:15675/2"
+	recordManager.Redisurl = "redis://:inphase123.@127.0.0.1:15675/2"
+	//recordManager.Redisurl = "redis://:inphase123.@192.168.2.64:23680/2"
 
 	err := recordManager.Srv.DaliWithURL(recordManager.Redisurl)
 	if err != nil {
