@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Config"
 	"StorageMaintainer1/DataManager"
 	"StorageMaintainer1/MongoDB"
 	"StorageMaintainer1/Redis"
@@ -16,12 +17,12 @@ func init() {
 func main() {
 	logger := LoggerModular.GetLogger()
 
-	//config := Config.GetConfig()
-	//if err := Config.ReadConfig(); err != nil {
-	//	logger.Error(err)
-	//	return
-	//}
-	//logger.Infof("Config is [%v]", config)
+	config := Config.GetConfig()
+	if err := Config.ReadConfig(); err != nil {
+		logger.Error(err)
+		return
+	}
+	logger.Infof("Config is [%v]", config)
 
 	//redis
 	if err := Redis.Init(); err != nil {
@@ -43,6 +44,6 @@ func main() {
 		TaskDispatch.GetTaskManager().Init()
 	}
 
-	a1 := make(chan bool)
-	<-a1
+	a := make(chan bool)
+	<-a
 }

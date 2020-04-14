@@ -41,7 +41,7 @@ func Init() error {
 	s := strconv.Itoa(DataManager.Size)
 	poolsize += s
 	MongoDBURL = strings.Replace(MongoDBURL, "maxPoolSize=10", poolsize, -1)
-	MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=200"
+	//MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=200"
 	if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &MongoSrv); err != nil {
 		logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
 		return err
@@ -69,7 +69,7 @@ func (record *RecordFileMongo) QueryRecord(Channel string, sTime int64, tpl inte
 
 	baseFilter := []interface{}{bson.M{"StartTime": bson.M{"$lte": sTime}}} //
 	baseFilter = append(baseFilter, bson.M{"ChannelInfoID": Channel})
-	baseFilter = append(baseFilter, bson.M{"LockStatus": DataDefine.StatusNotLock})
+	//baseFilter = append(baseFilter, bson.M{"LockStatus": DataDefine.StatusNotLock})
 	filter := bson.M{"$and": baseFilter}
 	return record.Srv.FindAll(record.Table, filter, RecordDefaultSort, maxTs, 0, tpl)
 }
