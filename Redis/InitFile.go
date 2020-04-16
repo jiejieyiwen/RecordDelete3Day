@@ -5,7 +5,7 @@ import (
 	"StorageMaintainer1/DataDefine"
 	"encoding/json"
 	"github.com/sirupsen/logrus"
-	ipublic "iPublic/DataFactory/DataDefine"
+	ipublic "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
 	"iPublic/LoggerModular"
 	"iPublic/RedisModular"
 	"strings"

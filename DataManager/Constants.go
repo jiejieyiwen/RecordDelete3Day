@@ -5,7 +5,7 @@ import (
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/sirupsen/logrus"
 	"iPublic/DataFactory"
-	"iPublic/DataFactory/DataDefine"
+	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
 	"sync"
 )
 

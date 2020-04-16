@@ -4,7 +4,7 @@ import (
 	SDataDefine "StorageMaintainer1/DataDefine"
 	"StorageMaintainer1/Redis"
 	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
-	"iPublic/DataFactory/DataDefine"
+	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
 	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"
 	"iPublic/iAuthorize"

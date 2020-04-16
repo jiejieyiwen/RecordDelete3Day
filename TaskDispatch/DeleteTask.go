@@ -176,8 +176,10 @@ func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManag
 		if len(dbResults) == 0 {
 			manager.logger.Infof("No DBResult For ChannelID:[%v], 协程: [%v]", v.ChannelInfo, mountpoint)
 			continue
+		} else {
+			manager.logger.Infof("Get DBResult For ChannelID:[%v], len: [%v], 协程: [%v]", v.ChannelInfo, len(dbResults), mountpoint)
+			DataManager.GetDataManager().PushNeedDeleteTs(dbResults[0])
 		}
-		DataManager.GetDataManager().PushNeedDeleteTs(dbResults[0])
 	}
 }
 

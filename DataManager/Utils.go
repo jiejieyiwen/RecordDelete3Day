@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/araddon/dateparse"
 	"github.com/sirupsen/logrus"
-	"iPublic/DataFactory/DataDefine"
+	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
 	"iPublic/LoggerModular"
 	"math"
 	"net/http"

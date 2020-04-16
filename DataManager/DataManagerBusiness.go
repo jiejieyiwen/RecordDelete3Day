@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"iPublic/DataFactory/DataDefine"
+	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
 )
 
 func (pThis *DataManager) GetStorageSchemeInfoByStorageSchemeID(strStorageSchemeID string) (DataDefine.StorageSchemeInfo, error) {
