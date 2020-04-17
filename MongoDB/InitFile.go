@@ -18,11 +18,11 @@ type RecordFileMongo struct {
 	Table  string                   //table name "RecordFileInfo"
 	Srv    MongoModular.MongoDBServ // MongoConnect
 	Logger *logrus.Entry
+	Data   string
 }
 
 var recordManager RecordFileMongo
 var MongoSrv MongoModular.MongoDBServ
-var RecoveryMongoDBTime int64
 
 func GetMongoRecordManager() *RecordFileMongo {
 	return &recordManager
@@ -30,8 +30,8 @@ func GetMongoRecordManager() *RecordFileMongo {
 
 func init() {
 	recordManager.Table = DefaultMongoTable + Date
+	recordManager.Data = Date
 	recordManager.Logger = LoggerModular.GetLogger().WithFields(logrus.Fields{"Table": DefaultMongoTable})
-	RecoveryMongoDBTime = DefaultMongoRecoveryTime
 }
 
 func Init() error {

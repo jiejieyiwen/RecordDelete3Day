@@ -1,7 +1,7 @@
 package DataManager
 
 import (
-	"StorageMaintainer1/Redis"
+	"StorageMaintainer/Redis"
 	"fmt"
 	"github.com/araddon/dateparse"
 	"github.com/sirupsen/logrus"

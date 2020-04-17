@@ -2,7 +2,7 @@ package Redis
 
 import (
 	"Config"
-	"StorageMaintainer1/DataDefine"
+	"StorageMaintainer/DataDefine"
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	ipublic "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"

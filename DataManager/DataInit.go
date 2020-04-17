@@ -1,9 +1,9 @@
 package DataManager
 
 import (
-	SDataDefine "StorageMaintainer1/DataDefine"
-	"StorageMaintainer1/Redis"
-	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
+	SDataDefine "StorageMaintainer/DataDefine"
+	"StorageMaintainer/Redis"
+	"StorageMaintainer/StorageMaintainerGRpc/StorageMaintainerMessage"
 	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
 	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"

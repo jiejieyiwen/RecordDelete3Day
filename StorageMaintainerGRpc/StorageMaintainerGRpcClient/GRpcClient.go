@@ -1,12 +1,11 @@
 package StorageMaintainerGRpcClient
 
 import (
-	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
+	"StorageMaintainer/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"iPublic/LoggerModular"
-	"time"
 )
 
 type GRpcClient struct {
@@ -62,28 +61,4 @@ func (pThis *GRpcClient) Notify(strChannelID string, strRelativePath string, str
 		}
 	}
 	return nil, errors.New("Connect Failed")
-}
-
-func (pThis *GRpcClient) Notify1(strChannelID string, strRelativePath string, strMountPoint string, strDate string, strRecordID string, nStartTime int64) (*StorageMaintainerMessage.ResData, error) {
-	logger := LoggerModular.GetLogger()
-	if nil == pThis.m_pClientCon {
-		return nil, errors.New("Client Has No Connected")
-	}
-	cli := StorageMaintainerMessage.NewSendClient(pThis.m_pClientCon)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	req := StorageMaintainerMessage.ReqData{
-		StrChannelID:    strChannelID,
-		StrRelativePath: strRelativePath,
-		StrMountPoint:   strMountPoint,
-		StrDate:         strDate,
-		StrRecordID:     strRecordID,
-		NStartTime:      nStartTime,
-	}
-	res, err := cli.SendMsg(ctx, &req)
-	if err != nil {
-		logger.Errorf("获取返回消息失败：[%v]", err)
-		return nil, err
-	}
-	return res, nil
 }

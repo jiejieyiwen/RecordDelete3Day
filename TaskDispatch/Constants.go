@@ -2,9 +2,9 @@ package TaskDispatch
 
 import (
 	AMQPModular "AMQPModular2"
-	SDataDefine "StorageMaintainer1/DataDefine"
-	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerGRpcClient"
-	"StorageMaintainer1/StorageMaintainerGRpc/StorageMaintainerMessage"
+	SDataDefine "StorageMaintainer/DataDefine"
+	"StorageMaintainer/StorageMaintainerGRpc/StorageMaintainerGRpcClient"
+	"StorageMaintainer/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2/bson"

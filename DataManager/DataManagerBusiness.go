@@ -1,7 +1,7 @@
 package DataManager
 
 import (
-	"StorageMaintainer1/Redis"
+	"StorageMaintainer/Redis"
 	"encoding/json"
 	"errors"
 	"fmt"
