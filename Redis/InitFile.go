@@ -2,7 +2,7 @@ package Redis
 
 import (
 	"Config"
-	"StorageMaintainer/DataDefine"
+	"RecordDelete3Day/DataDefine"
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	ipublic "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
@@ -13,23 +13,19 @@ import (
 )
 
 type RecordFileRedis struct {
-	Table    string                  //table name "db12"
 	Srv      *RedisModular.RedisConn // RedisConnect
 	Redisurl string                  //redis地址
 	Logger   *logrus.Entry
 }
 
 var recordManager RecordFileRedis
-var RedisSrv RedisModular.RedisConn
-var RedisLib string
 
 func GetRedisRecordManager() *RecordFileRedis {
 	return &recordManager
 }
 
 func init() {
-	recordManager.Table = DefaultRedisTable
-	recordManager.Logger = LoggerModular.GetLogger().WithFields(logrus.Fields{"Table": DefaultRedisTable})
+	recordManager.Logger = LoggerModular.GetLogger().WithFields(logrus.Fields{})
 }
 
 func Init() error {
@@ -64,30 +60,6 @@ func (record *RecordFileRedis) GetStorageSchemeInfoFromRedis(info *[]ipublic.Sto
 			err = json.Unmarshal([]byte(value), &ChannelList)
 			if err != nil {
 				record.Logger.Errorf(" unmarshal StorageSchemeInfo failed!~~")
-				return err
-			} else {
-				*info = append(*info, ChannelList)
-			}
-		}
-	}
-	return nil
-}
-
-func (record *RecordFileRedis) GetStorageMediumInfoFromRedis(info *[]ipublic.StorageMediumInfo, key string, wg *sync.WaitGroup) (err error) {
-	defer wg.Done()
-	key = "DC_StorageMediumInfo:Data"
-	pStringStringMapCmd := record.Srv.Client.HGetAll(key)
-	data, err := pStringStringMapCmd.Result()
-	if err != nil {
-		record.Logger.Errorf("read StorageMediumInfo error: %v\n", err)
-		return err
-	} else {
-		record.Logger.Infof("read StorageMediumInfo successs")
-		var ChannelList ipublic.StorageMediumInfo
-		for _, value := range data {
-			err = json.Unmarshal([]byte(value), &ChannelList)
-			if err != nil {
-				record.Logger.Errorf(" unmarshal StorageMediumInfo failed,err:%v", err.Error())
 				return err
 			} else {
 				*info = append(*info, ChannelList)
@@ -141,7 +113,7 @@ func (record *RecordFileRedis) GetDeleteServerConfig() (pSeverInfo map[string]st
 		//地址
 		arrStr := strings.Split(key, ":")
 		strServerAddr := arrStr[1]
-		keys := "Host_DeleteServerManager_"
+		keys := DataDefine.HOST_SERVER_CONFIG
 		keys += strServerAddr
 		pStringSliceCmd1 := record.Srv.Client.Get(keys)
 		if nil != pStringSliceCmd1.Err() {
@@ -151,13 +123,8 @@ func (record *RecordFileRedis) GetDeleteServerConfig() (pSeverInfo map[string]st
 		//挂载点
 		pSeverInfo[pStringSliceCmd1.Val()] = strAllMountPoint
 	}
-	record.Logger.Infof("Get DeleteServerIP Success: [%v]", pSeverInfo)
+	//record.Logger.Infof("Get DeleteServerIP Success: [%v]", pSeverInfo)
 	return
-}
-
-func (record *RecordFileRedis) DeleteServerInRedis(strKey string) error {
-	pIntCmd := record.Srv.Client.HDel(DataDefine.KEY_NAME_SERVER_CONFIG, strKey)
-	return pIntCmd.Err()
 }
 
 func (record *RecordFileRedis) GetMountPointFromRedis(key string) (string, error) {

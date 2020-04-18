@@ -1,7 +1,7 @@
 package StorageMaintainerGRpcClient
 
 import (
-	"StorageMaintainer/StorageMaintainerGRpc/StorageMaintainerMessage"
+	"RecordDelete3Day/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

@@ -1,7 +1,9 @@
 package DataManager
 
 import (
-	"StorageMaintainer/Redis"
+	"RecordDelete3Day/Redis"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/araddon/dateparse"
 	"github.com/sirupsen/logrus"
@@ -16,9 +18,6 @@ const OneHour = 60 * 60
 const IgnoreDays = 1
 
 func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
-	/*
-		对通道存储信息进行预处理
-	*/
 	pThis.SliceChannelStorageInfoLock.Lock()
 	defer pThis.SliceChannelStorageInfoLock.Unlock()
 	var Result []StorageDaysInfo
@@ -44,44 +43,28 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 	return Result
 }
 
-func (pThis *DataManager) GetAllStorageDaysbyID(s []DataDefine.ChannelStorageInfo) []StorageDaysInfo {
-	/*
-		对通道存储信息进行预处理
-	*/
-	var Result []StorageDaysInfo
-	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{})
-	for _, chStorageInfo := range s {
-		if schemeInfo, err := GetDataManager().GetStorageSchemeInfoByStorageSchemeID(chStorageInfo.StorageSchemeID); nil != err {
-			ErrMsg := fmt.Sprintf("Can't find Channel StorageSchemeInfo For Channel ID:[%s], StorageSchemeID:[%s] ",
-				chStorageInfo.ChannelID, chStorageInfo.StorageSchemeID)
-			logger.Error(ErrMsg)
-			continue
-		} else {
-			Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.ChannelID, StorageDays: schemeInfo.StorageDays})
-			logger.Infof("Get Channel [%s] Storage Days [%d] ok ", chStorageInfo.ChannelID, schemeInfo.StorageDays)
-		}
-		time.Sleep(time.Microsecond)
+func (pThis *DataManager) GetStorageSchemeInfoByStorageSchemeID(strStorageSchemeID string) (DataDefine.StorageSchemeInfo, error) {
+	tReturn := DataDefine.StorageSchemeInfo{}
+	rec := Redis.GetRedisRecordManager()
+	strPrefix := "DC_StorageSchemeInfo:Data"
+	pStringCmd := rec.Srv.Client.HGet(strPrefix, strStorageSchemeID)
+	if nil != pStringCmd.Err() {
+		return tReturn, errors.New(fmt.Sprintf("Can`t Find StorageSchemeInfo:[%s] StorageSchemeID !", strStorageSchemeID))
 	}
-	return Result
+	strData, _ := pStringCmd.Result()
+	json.Unmarshal([]byte(strData), &tReturn)
+	return tReturn, nil
 }
 
 func GetSubDayMorningTimeStamp(subDay int) (int64, error) {
-	/*
-		从当天凌晨开始计算初始时间,根据传入的策略天数倒推
-	*/
-	//logger := LoggerModular.GetLogger().WithFields(logrus.Fields{"subDay": subDay})
 	tNow := time.Now()
 	mainTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 0, 0, 0, 0, time.UTC) // TODO 需确认之前的时区
 	DaysAgo := mainTime.AddDate(0, 0, -(subDay + IgnoreDays))                          // 多保留一天的量
 	TimeStamp := DaysAgo.Unix()
-	//logger.Infof("Get subDay ok, time:[%v], Timstamp:[%d]", DaysAgo, TimeStamp)
 	return TimeStamp - 8*OneHour, nil
 }
 
 func CheckNetworkTimeWithNTSC() bool {
-	/*
-		从国家授时中心获取时间, 误差大于一个小时，返回false
-	*/
 	var client http.Client
 	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{"NTSC": NTSC_URL})
 	if req, err := http.NewRequest("GET", NTSC_URL, nil); err != nil {

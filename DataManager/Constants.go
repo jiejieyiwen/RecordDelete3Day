@@ -1,8 +1,8 @@
 package DataManager
 
 import (
-	SDataDefine "StorageMaintainer/DataDefine"
-	"StorageMaintainer/StorageMaintainerGRpc/StorageMaintainerMessage"
+	SDataDefine "RecordDelete3Day/DataDefine"
+	"RecordDelete3Day/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/sirupsen/logrus"
 	"iPublic/DataFactory"
 	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"

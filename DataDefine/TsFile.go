@@ -9,27 +9,10 @@ type MongoLockStatus int
 type MongoRecordStatus int
 
 const (
-	StorageType_Local_NFS = 1
-)
-
-const (
 	StatusNotLock      MongoLockStatus = 0 // 初始状态
 	StatusLockToLock   MongoLockStatus = 1 // 文件预备删除, 删除程序启动后，对记录进行加锁，加锁后的状态为预备删除锁定
 	StatusLockToDelete MongoLockStatus = 2 // 文件删除
 
-)
-
-const (
-	StatusNormal        MongoRecordStatus = 0 // 初始状态
-	StatusReadyToDelete MongoRecordStatus = 1 //
-
-)
-
-const (
-	STATUS_DELECT_FAILED            = -1
-	STATUS_DELECT_NONE              = 0
-	STATUS_DELECT_SUCCESS           = 1
-	STATUS_DELECT_SUCCESS_AND_SLEEP = 2
 )
 
 type RecordFileInfo struct {
@@ -50,12 +33,4 @@ type RecordFileInfo struct {
 	MountPoint         string            `json:"MountPoint" bson:"MountPoint"`
 	TsTime             int               `json:"TsTime" bson:"TsTime-"`
 	Date               string            `json:"DATE" bson:"Date"`
-}
-
-func (info *RecordFileInfo) GetFileName() string {
-	return info.RecordName
-}
-
-func (info *RecordFileInfo) GetFilePath() string {
-	return info.RecordRelativePath
 }
