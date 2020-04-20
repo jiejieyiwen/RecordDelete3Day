@@ -37,7 +37,7 @@ func main() {
 	}
 
 	//mongo
-	if err := MongoDB.Init(); err != nil {
+	if err := MongoDB.GetMongoRecordManager().Init(); err != nil {
 		logger.Error(err)
 		return
 	} else {

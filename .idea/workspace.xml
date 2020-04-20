@@ -2,33 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a281c354-1dd4-4ee6-a824-c2b75c308ee6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/RecordDelete3Day.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/StorageMaintainer.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataDefine/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataDefine/Constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataDefine/Struct.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataDefine/TsFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataDefine/TsFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataManager/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/Constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataManager/DataInit.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/DataInit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataManager/DataManagerBusiness.go" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecordDelete3Day0419" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataManager/Utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/Utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/Constants.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MongoDB/InitFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/InitFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Redis/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/Redis/Constants.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MqModular/Connetion.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MqModular/GetMQConfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MqModular/GetRabbitMQServ.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MqModular/InitialMQ.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MqModular/MQInterface.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MqModular/QueueDeal.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Redis/InitFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/Redis/InitFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageMaintainer.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerGRpcClient/GRpcClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerGRpcClient/GRpcClient.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerMessage/DeleteFromLocal.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerMessage/DeleteFromLocal.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskDispatch/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/TaskDispatch/Constants.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskDispatch/DeleteTask.go" beforeDir="false" afterPath="$PROJECT_DIR$/TaskDispatch/DeleteTask.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
@@ -44,18 +42,103 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="GO_FMT" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MQFileDelete" />
+  </component>
+  <component name="RunManager" selected="Go Test.TestCh in RecordDelete3Day/TaskDispatch (1)">
+    <configuration name="TestCh in RecordDelete3Day/TaskDispatch (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="RecordDelete3Day" />
+      <working_directory value="$PROJECT_DIR$/TaskDispatch" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="RecordDelete3Day/TaskDispatch" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestCh$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestCh in RecordDelete3Day/TaskDispatch" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="RecordDelete3Day" />
+      <working_directory value="$PROJECT_DIR$/TaskDispatch" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="RecordDelete3Day/TaskDispatch" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestCh$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestCh in RecordDelete3Day/TaskDispatch (1)" />
+        <item itemvalue="Go Test.TestCh in RecordDelete3Day/TaskDispatch" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="add new 0418" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new 0418" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="578" y="339" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1587298015335">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="578" y="339" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2048.1112@0.0.2048.1112" timestamp="1587298015335" />
+    <state x="434" y="42" key="CommitChangelistDialog2" timestamp="1587214821260">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="434" y="42" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1587214821260" />
+    <state x="563" y="187" key="FileChooserDialogImpl" timestamp="1587348508964">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="563" y="187" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1587348508964" />
+    <state x="751" y="252" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1587295834438" />
+    <state width="1995" height="347" key="GridCell.Tab.0.bottom" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.0.center" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.0.left" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.0.right" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.1.bottom" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.1.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.1.center" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.1.center/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.1.left" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.1.left/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state width="1995" height="347" key="GridCell.Tab.1.right" timestamp="1587265749887">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="1995" height="347" key="GridCell.Tab.1.right/0.0.2048.1112@0.0.2048.1112" timestamp="1587265749887" />
+    <state x="653" y="61" width="742" height="990" key="find.popup" timestamp="1587264684387">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="653" y="61" width="742" height="990" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1587264684387" />
   </component>
 </project>

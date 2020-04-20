@@ -123,7 +123,6 @@ func (record *RecordFileRedis) GetDeleteServerConfig() (pSeverInfo map[string]st
 		//挂载点
 		pSeverInfo[pStringSliceCmd1.Val()] = strAllMountPoint
 	}
-	//record.Logger.Infof("Get DeleteServerIP Success: [%v]", pSeverInfo)
 	return
 }
 

@@ -30,6 +30,9 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 			logger.Error(ErrMsg)
 			continue
 		}
+		//if schemeInfo.StorageDays != 3 {
+		//	continue
+		//}
 		//获取设备挂载点
 		rec := Redis.GetRedisRecordManager()
 		mountpoint, err := rec.GetMountPointFromRedis(chStorageInfo.StorageMediumID)
