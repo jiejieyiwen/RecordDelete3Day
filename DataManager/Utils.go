@@ -7,15 +7,20 @@ import (
 	"fmt"
 	"github.com/araddon/dateparse"
 	"github.com/sirupsen/logrus"
-	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
+	DataDefine "iPublic/DataFactory/DataDefine/ProtoBuf"
 	"iPublic/LoggerModular"
 	"math"
 	"net/http"
+	"sync/atomic"
 	"time"
 )
 
 const OneHour = 60 * 60
 const IgnoreDays = 1
+
+var DeviceCount int32
+
+var CurDay int32
 
 func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 	pThis.SliceChannelStorageInfoLock.Lock()
@@ -23,25 +28,31 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 	var Result []StorageDaysInfo
 	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{})
 	for _, chStorageInfo := range pThis.SliceChannelStorageInfo {
-		schemeInfo, err := GetDataManager().GetStorageSchemeInfoByStorageSchemeID(chStorageInfo.StorageSchemeID)
+		schemeInfo, err := GetDataManager().GetStorageSchemeInfoByStorageSchemeID(chStorageInfo.StorageSchemeId)
 		if err != nil {
 			ErrMsg := fmt.Sprintf("Can't find Channel StorageSchemeInfo For Channel ID:[%s], StorageSchemeID:[%s] ",
-				chStorageInfo.ChannelID, chStorageInfo.StorageSchemeID)
+				chStorageInfo.DeviceId, chStorageInfo.StorageSchemeId)
 			logger.Error(ErrMsg)
 			continue
 		}
-		//if schemeInfo.StorageDays != 3 {
-		//	continue
-		//}
-		//获取设备挂载点
-		rec := Redis.GetRedisRecordManager()
-		mountpoint, err := rec.GetMountPointFromRedis(chStorageInfo.StorageMediumID)
-		if err != nil {
-			pThis.logger.Errorf("Get MountPoint From Redis Error: ChannelID: [%v], error: [%v]", chStorageInfo.ChannelID, err)
+		if schemeInfo.StorageDays != CurDay {
 			continue
 		}
-		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.ChannelID, StorageDays: schemeInfo.StorageDays, Path: mountpoint})
-		logger.Infof("Get Channel [%s] Storage Days [%d], MountPonit [%v] ok ", chStorageInfo.ChannelID, schemeInfo.StorageDays, mountpoint)
+		//获取设备挂载点
+		rec := Redis.GetRedisRecordManager()
+		mountpoint, err := rec.GetMountPointFromRedis(chStorageInfo.StorageMediumId)
+		//if !strings.Contains(mountpoint, "yyxs") {
+		//	continue
+		//}
+		if err != nil {
+			pThis.logger.Errorf("Get MountPoint From Redis Error: ChannelID: [%v], error: [%v]", chStorageInfo.DeviceId, err)
+			continue
+		}
+		mountpoint += "/"
+		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.DeviceId, StorageDays: schemeInfo.StorageDays, Path: mountpoint})
+		atomic.AddInt32(&DeviceCount, 1)
+		logger.Infof("Get Channel [%s] Storage Days [%d], MountPonit [%v] ok ", chStorageInfo.DeviceId, schemeInfo.StorageDays, mountpoint)
+		time.Sleep(time.Nanosecond)
 	}
 	return Result
 }

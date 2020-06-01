@@ -1,48 +1,25 @@
 package DataManager
 
 import (
-	SDataDefine "RecordDelete3Day/DataDefine"
-	"RecordDelete3Day/StorageMaintainerGRpc/StorageMaintainerMessage"
 	"github.com/sirupsen/logrus"
-	"iPublic/DataFactory"
-	DataDefine "iPublic/DataFactory/DataDefine/ProductPlatformDataDefine"
+	DataDefine "iPublic/DataFactory/DataDefine/ProtoBuf"
 	"sync"
 )
 
 type StorageDaysInfo struct {
 	ChannelInfo string
-	StorageDays int
+	StorageDays int32
 	Path        string
 }
 
 type DataManager struct {
-	/*
-		存放介质，通道Token等信息
-	*/
-	bRunning                bool
-	bRecicvedGRPCNotify     bool
-	bRecicvedGRPCNotifyLock sync.RWMutex
-
-	mpDataInterface             DataFactory.Datainterface
-	SliceChannelStorageInfo     []DataDefine.ChannelStorageInfo
+	SliceChannelStorageInfo     []DataDefine.StorageData
 	SliceChannelStorageInfoLock sync.RWMutex
 
-	TaskMap               []StorageDaysInfo
-	TaskMapLock           sync.RWMutex
-	NeedDeleteTsList      []SDataDefine.RecordFileInfo // TS信息
-	NeedDeleteTsList1     chan SDataDefine.RecordFileInfo
-	NeedDeleteTsList1Lock sync.Mutex
-	PlatformToken         string
-	logger                *logrus.Logger //日志
+	logger *logrus.Logger //日志
 
 	MountPointList     map[string][]StorageDaysInfo //挂载点表
 	MountPointListLock sync.Mutex
-
-	MountPointMQList     map[string]chan StorageMaintainerMessage.StreamResData //挂载点表
-	MountPointMQListLock sync.Mutex
-
-	MapNeedDeleteList     map[string][]SDataDefine.RecordFileInfo
-	MapNeedDeleteListLock sync.Mutex
 }
 
 var dManager DataManager

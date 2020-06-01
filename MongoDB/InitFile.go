@@ -9,38 +9,17 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"iPublic/LoggerModular"
 	"iPublic/MongoModular"
-	"time"
 )
 
 type RecordFileMongo struct {
 	Logger *logrus.Entry
-	Srv    MongoModular.MongoDBServ
-}
-
-type RecordFileMongo2 struct {
-	Srv []MongoModular.MongoDBServ // MongoConnect
-}
-
-type RecordFileMongo1 struct {
-	Srv []MongoModular.MongoDBServ // MongoConnect
+	Srv    []MongoModular.MongoDBServ
 }
 
 var recordManager RecordFileMongo
-var recordManager1 RecordFileMongo1
-var recordManager2 RecordFileMongo2
-
-var MongoSrv MongoModular.MongoDBServ
 
 func GetMongoRecordManager() *RecordFileMongo {
 	return &recordManager
-}
-
-func GetMongoRecordManager2() *RecordFileMongo2 {
-	return &recordManager2
-}
-
-func GetMongoRecordManager1() *RecordFileMongo1 {
-	return &recordManager1
 }
 
 func init() {
@@ -50,12 +29,7 @@ func init() {
 func (record *RecordFileMongo) Init() error {
 	logger := LoggerModular.GetLogger()
 	MongoDBURL := Config.GetConfig().MongoDBConfig.MongoDBURLMongo
-	//if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &record.Srv); err != nil {
-	//	logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
-	//	return err
-	//} else {
-	//	logger.Infof("Init Mongo Connect over url: [%v] ", MongoDBURL)
-	//}
+	//MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
 
 	for i := 0; i < DataManager.Size; i++ {
 		var srv MongoModular.MongoDBServ
@@ -63,76 +37,76 @@ func (record *RecordFileMongo) Init() error {
 			logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
 			return err
 		} else {
-			recordManager1.Srv = append(recordManager1.Srv, srv)
+			recordManager.Srv = append(recordManager.Srv, srv)
 			logger.Infof("Init Mongo Connect over url: [%v] ", MongoDBURL)
 		}
 	}
-
-	//for i := 0; i < DataManager.Size; i++ {
-	//	var srv MongoModular.MongoDBServ
-	//	if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err != nil {
-	//		logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
-	//		return err
-	//	} else {
-	//		recordManager2.Srv = append(recordManager2.Srv, srv)
-	//		logger.Infof("Init Mongo Connect over url: [%v] ", MongoDBURL)
-	//	}
-	//}
 	return nil
 }
 
-func QueryRecord(Channel string, sTime int64, tpl interface{}, maxTs int, srv MongoModular.MongoDBServ) error {
+func QueryRecord(Channel string, tpl interface{}, maxTs int, srv MongoModular.MongoDBServ) (err error, table string) {
 	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{
-		"StartTime": sTime,
-		"MaxCount":  maxTs,
-		"Channel":   Channel,
+		"MaxCount": maxTs,
+		"Channel":  Channel,
 	})
 	defer func() {
 		if err := recover(); err != nil {
 			logger.Errorf("Panic in QueryRecord: [%s]", err)
 		}
 	}()
-
-	baseFilter := []interface{}{bson.M{"StartTime": bson.M{"$lte": sTime}}} //
-	baseFilter = append(baseFilter, bson.M{"ChannelInfoID": Channel})
-	//baseFilter = append(baseFilter, bson.M{"LockStatus": DataDefine.StatusNotLock})
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": Channel}}
 	filter := bson.M{"$and": baseFilter}
-	return srv.FindAll(DefaultMongoTable, filter, RecordDefaultSort, maxTs, 0, tpl)
+	Table := "RecordFileInfo_"
+	Table = Table + Date
+	return srv.FindAll(Table, filter, RecordDefaultSort, maxTs, 0, tpl), Table
 }
 
-func SetInfoMongoToDelete(id, mp string, stime int64, srv MongoModular.MongoDBServ) (info *mgo.ChangeInfo, err error) {
+func QueryRecordbydate(Channel, date string, tpl interface{}, maxTs int, srv MongoModular.MongoDBServ) (err error, table, data string) {
+	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{
+		"MaxCount": maxTs,
+		"Channel":  Channel,
+	})
+	defer func() {
+		if err := recover(); err != nil {
+			logger.Errorf("Panic in QueryRecord: [%s]", err)
+		}
+	}()
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": Channel}}
+	baseFilter = append(baseFilter, bson.M{"Date": date})
+	filter := bson.M{"$and": baseFilter}
+	Table := "RecordFileInfo_"
+	Table = Table + Date
+	return srv.FindAll(Table, filter, RecordDefaultSort, maxTs, 0, tpl), Table, date
+}
+
+func DeleteMongoTsAll(id, date string, srv MongoModular.MongoDBServ) (info *mgo.ChangeInfo, err error, table, da string) {
 	baseFilter := []interface{}{bson.M{"ChannelInfoID": id}}
-	baseFilter = append(baseFilter, bson.M{"MountPoint": mp})
-	tNow := time.Unix(stime, 0)
-	eTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 0, 1440, 0, 0, time.Local).Unix()
-	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$lt": eTime}})
-	//baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$gte": stime}})
+	baseFilter = append(baseFilter, bson.M{"Date": date})
 	filter := bson.M{"$and": baseFilter}
-	apply := mgo.Change{
-		Update: bson.M{
-			"LockStatus": DataDefine.StatusLockToDelete, //设置为删除
-			"DeleteTime": time.Now().Unix()},            //设置个预备删除时间，经过一段时间后，再删除MongoDB数据, 方便前期排错
-		ReturnNew: true,
-		Upsert:    false,
-	}
-	var Result interface{}
-	return srv.Update1(DefaultMongoTable, filter, apply, Result)
+	Table := "RecordFileInfo_"
+	Table = Table + Date
+	info, err = srv.DeleteAll(Table, filter)
+	return info, err, Table, date
 }
 
-func DeleteMongoTsAll(id, mp string, stime int64, srv MongoModular.MongoDBServ) (info *mgo.ChangeInfo, err error) {
-	baseFilter := []interface{}{bson.M{"ChannelInfoID": id}}
-	baseFilter = append(baseFilter, bson.M{"MountPoint": mp})
-	tNow := time.Unix(stime, 0)
-	eTime := time.Date(tNow.Year(), tNow.Month(), tNow.Day(), 0, 1440, 0, 0, time.Local).Unix()
-	baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$lt": eTime}})
-	//baseFilter = append(baseFilter, bson.M{"StartTime": bson.M{"$gte": stime}})
-	filter := bson.M{"$and": baseFilter}
-	return srv.DeleteAll(DefaultMongoTable, filter)
-}
-
-func DeleteMongoTsInfoByID(id bson.ObjectId, srv MongoModular.MongoDBServ) error {
-	///彻底删除MongoDB记录
-	baseFilter := []interface{}{bson.M{"_id": id}}
-	filter := bson.M{"$and": baseFilter}
-	return srv.Delete(DefaultMongoTable, filter)
+func WriteMongoFile(rec DataDefine.RecordFileInfo, srv MongoModular.MongoDBServ) (err error, table string) {
+	baseFilter := []interface{}{bson.M{"ChannelInfoID": rec.ChannelInfoID,
+		"RecordID":           rec.RecordID,
+		"StorageMediumInfo":  rec.StorageMediumInfo,
+		"RecordName":         rec.RecordName,
+		"RecordRelativePath": rec.RecordRelativePath,
+		"RecordFileType":     rec.RecordFileType,
+		"StartTime":          rec.StartTime,
+		"EndTime":            rec.EndTime,
+		"CreateTime":         rec.CreateTime,
+		"Status":             rec.Status,
+		"LockStatus":         rec.LockStatus,
+		"FileSize":           rec.FileSize,
+		"TaskID":             rec.TaskID,
+		"MountPoint":         rec.MountPoint,
+		"TsTime":             rec.TsTime,
+		"Date":               rec.Date}}
+	Table := "RecordFileInfo_"
+	Table = Table + Date
+	return srv.Insert(Table, baseFilter), Table
 }
