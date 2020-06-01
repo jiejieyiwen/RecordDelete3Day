@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea2e304b-a913-4283-84ab-2a1dfc3c2c17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/deleteNew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RecordDelete3Day.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RecordDelete3Day.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataManager/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/Constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataManager/DataInit.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/DataInit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataManager/Utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/Utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/Constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/InitFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/InitFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RecordDelete3Day0419" beforeDir="false" afterPath="$PROJECT_DIR$/SearchTaskNew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Redis/InitFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/Redis/InitFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskDispatch/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/TaskDispatch/Constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskDispatch/DeleteTask.go" beforeDir="false" afterPath="$PROJECT_DIR$/TaskDispatch/DeleteTask.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,6 +21,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="GO_FMT" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -43,15 +33,31 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="0601 update" />
+    <option name="LAST_COMMIT_MESSAGE" value="0601 update" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="592" y="339" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589980088415">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="592" y="339" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2048.1112@0.0.2048.1112" timestamp="1589980088415" />
+    <state x="278" y="0" key="CommitChangelistDialog2" timestamp="1590978462923">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="278" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1590978462922" />
     <state x="495" y="109" key="FileChooserDialogImpl" timestamp="1590733893763">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="495" y="109" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590733893763" />
     <state x="660" y="147" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1589981532644" />
+    <state x="260" y="81" key="Vcs.Push.Dialog.v2" timestamp="1590979219676">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="260" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1590979219676" />
+    <state x="431" y="292" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1590979209581">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="292" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1536.824@0.0.1536.824" timestamp="1590979209581" />
   </component>
 </project>

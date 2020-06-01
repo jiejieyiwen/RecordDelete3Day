@@ -98,8 +98,8 @@ func main() {
 	c.Start()
 	defer c.Stop()
 
-	a := make(chan bool)
-	<-a
+	a1 := make(chan bool)
+	<-a1
 }
 
 func initDataManager1() {
