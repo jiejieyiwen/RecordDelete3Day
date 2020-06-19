@@ -20,6 +20,7 @@ message StreamReqData {
     string strDate = 4;
     string strRecordID = 5;
     int64 nStartTime = 6;
+    int32 nType = 7;
 }
 //stream返回结构
 message StreamResData {
@@ -29,4 +30,5 @@ message StreamResData {
     string strDate = 4;
     string strMountPoint = 5;
     int64 nStartTime = 6;
+    int32 nType = 7;
 }

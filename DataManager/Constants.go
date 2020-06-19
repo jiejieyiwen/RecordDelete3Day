@@ -10,6 +10,7 @@ type StorageDaysInfo struct {
 	ChannelInfo string
 	StorageDays int32
 	Path        string
+	Type        int32
 }
 
 type DataManager struct {

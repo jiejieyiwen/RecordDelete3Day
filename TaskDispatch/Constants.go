@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-var SearchNum int = 5
+var SearchNum = 1
 
 type DeleteServerInfo struct {
 	Con        *StorageMaintainerGRpcClient.GRpcClient

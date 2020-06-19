@@ -36,7 +36,7 @@ func (pThis *GRpcClient) Close() {
 	}
 }
 
-func (pThis *GRpcClient) Notify(strChannelID string, strRelativePath string, strMountPoint string, strDate string, strRecordID string, nStartTime int64) (*StorageMaintainerMessage.StreamResData, error) {
+func (pThis *GRpcClient) Notify(strChannelID string, strRelativePath string, strMountPoint string, strDate string, strRecordID string, nStartTime int64, nType int32) (*StorageMaintainerMessage.StreamResData, error) {
 	if nil == pThis.m_pClientCon {
 		return nil, errors.New("Client Has No Connected")
 	}
@@ -47,7 +47,8 @@ func (pThis *GRpcClient) Notify(strChannelID string, strRelativePath string, str
 		StrMountPoint:   strMountPoint,
 		StrDate:         strDate,
 		StrRecordID:     strRecordID,
-		NStartTime:      nStartTime}
+		NStartTime:      nStartTime,
+		NType:           nType}
 	//调用服务端推送流
 	res, _ := c.GetStream(context.Background(), &req)
 	//循环接受推流

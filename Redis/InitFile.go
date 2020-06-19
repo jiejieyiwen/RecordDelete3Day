@@ -25,8 +25,20 @@ func GetRedisRecordManager() *RecordFileRedis {
 	return &recordManager
 }
 
+//type ClusterRedis struct {
+//	Srv    *RedisModular.RedisClustorConn
+//	Logger *logrus.Entry
+//}
+//
+//var clusterRedisCon ClusterRedis
+//
+//func GetClusterRedisCon() *ClusterRedis {
+//	return &clusterRedisCon
+//}
+
 func init() {
 	recordManager.Logger = LoggerModular.GetLogger().WithFields(logrus.Fields{})
+	//clusterRedisCon.Logger = LoggerModular.GetLogger().WithFields(logrus.Fields{})
 }
 
 func Init() error {
@@ -45,6 +57,22 @@ func Init() error {
 		logger.Infof("Init Redis Success: [%v]", recordManager.Redisurl)
 		return nil
 	}
+
+	//clusterRedisCon.Srv = RedisModular.GetClustRedisPool()
+	//clusterRedisCon.Srv.Addr = append(clusterRedisCon.Srv.Addr, "192.168.2.64:20301")
+	//clusterRedisCon.Srv.Addr = append(clusterRedisCon.Srv.Addr, "192.168.2.64:20302")
+	//clusterRedisCon.Srv.Addr = append(clusterRedisCon.Srv.Addr, "192.168.2.64:20303")
+	//clusterRedisCon.Srv.Addr = append(clusterRedisCon.Srv.Addr, "192.168.2.64:20304")
+	//clusterRedisCon.Srv.PoolSize = 10
+	//clusterRedisCon.Srv.Password = "Wow&Y#CanReally4"
+	//
+	//if err := clusterRedisCon.Srv.DialWithUrl(); err != nil {
+	//	logger.Errorf("ClusterCon err: [%v]", err.Error())
+	//	return err
+	//} else {
+	//	logger.Infof("Init Cluster Redis Success: [%v]", clusterRedisCon.Srv.Addr)
+	//	return nil
+	//}
 }
 
 func (record *RecordFileRedis) GetStorageSchemeInfoFromRedis(info *[]ipublic.StorageSchemeInfo, key string, wg *sync.WaitGroup) (err error) {
@@ -142,25 +170,21 @@ func (record *RecordFileRedis) GetChannelStorageInfoFromRedisNew(info *[]ipublic
 		data, err := pStringStringMapCmd.Result()
 		if err != nil {
 			record.Logger.Infof("Get ChannelStorageInfo from redis error: %v\n", err)
-			count := 0
 			for {
 				pStringStringMapCmd := record.Srv.Client.HGetAll(v)
-				data, err := pStringStringMapCmd.Result()
-				if err != nil {
-					count++
-					if count >= 3 {
-						break
-					}
+				data, err1 := pStringStringMapCmd.Result()
+				if err1 != nil {
+					record.Logger.Infof("ReGet ChannelStorageInfo from redis error: %v\n", err1)
 					time.Sleep(time.Second * 3)
 					continue
 				} else {
-					record.Logger.Infof("ReGet all ChannelStorageInfo from redis Success")
+					record.Logger.Infof("ReGet all ChannelStorageInfo from redis Success: [%v]", len(data))
 					var ChannelList ipublic.StorageData
 					for _, value := range data {
 						err = json.Unmarshal([]byte(value), &ChannelList)
 						if err != nil {
 							record.Logger.Infof("ReUnmarshal ChannelStorageInfo failed,err:%v", err.Error())
-							return err
+							continue
 						} else {
 							*info = append(*info, ChannelList)
 						}
@@ -168,7 +192,6 @@ func (record *RecordFileRedis) GetChannelStorageInfoFromRedisNew(info *[]ipublic
 					break
 				}
 			}
-			continue
 		} else {
 			record.Logger.Infof("Get all ChannelStorageInfo from redis Success: [%v]", len(data))
 			var ChannelList ipublic.StorageData
@@ -176,7 +199,7 @@ func (record *RecordFileRedis) GetChannelStorageInfoFromRedisNew(info *[]ipublic
 				err = json.Unmarshal([]byte(value), &ChannelList)
 				if err != nil {
 					record.Logger.Infof("Unmarshal ChannelStorageInfo failed,err:%v", err.Error())
-					return err
+					continue
 				} else {
 					*info = append(*info, ChannelList)
 				}
@@ -236,3 +259,13 @@ func (record *RecordFileRedis) GetSeverList(key string) (err error, add string) 
 	}
 	return nil, pStringSliceCmd.Val()
 }
+
+//func (record *RecordFileRedis) WriteDeviceNum(device DeviceNum) error {
+//	date := time.Now().Format("2006-01-02")
+//	key := "DeviceNum_" + date
+//	data, err := json.Marshal(device)
+//	if err != nil {
+//		return err
+//	}
+//	return record.Srv.Client.Set(key, data, time.Hour*72).Err()
+//}

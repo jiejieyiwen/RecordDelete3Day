@@ -3,7 +3,6 @@ package MongoDB
 import (
 	"Config"
 	"RecordDelete3Day/DataDefine"
-	"RecordDelete3Day/DataManager"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -17,9 +16,14 @@ type RecordFileMongo struct {
 }
 
 var recordManager RecordFileMongo
+var recordManager1 RecordFileMongo
 
 func GetMongoRecordManager() *RecordFileMongo {
 	return &recordManager
+}
+
+func GetMongoRecordManager1() *RecordFileMongo {
+	return &recordManager1
 }
 
 func init() {
@@ -31,7 +35,8 @@ func (record *RecordFileMongo) Init() error {
 	MongoDBURL := Config.GetConfig().MongoDBConfig.MongoDBURLMongo
 	//MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
 
-	for i := 0; i < DataManager.Size; i++ {
+	//动存
+	for i := 0; i < 100; i++ {
 		var srv MongoModular.MongoDBServ
 		if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err != nil {
 			logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
@@ -39,6 +44,19 @@ func (record *RecordFileMongo) Init() error {
 		} else {
 			recordManager.Srv = append(recordManager.Srv, srv)
 			logger.Infof("Init Mongo Connect over url: [%v] ", MongoDBURL)
+		}
+	}
+
+	//全存
+	MongoDBURL = Config.GetConfig().PullStorageConfig.MongoDBURLMongo
+	for i := 0; i < 100; i++ {
+		var srv MongoModular.MongoDBServ
+		if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err != nil {
+			logger.Errorf("Init Pull Mongo Connect Err: [%v]. ", err)
+			return err
+		} else {
+			recordManager1.Srv = append(recordManager1.Srv, srv)
+			logger.Infof("Init Pull Mongo Connect over url: [%v] ", MongoDBURL)
 		}
 	}
 	return nil

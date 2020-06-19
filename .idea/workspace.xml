@@ -2,13 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea2e304b-a913-4283-84ab-2a1dfc3c2c17" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/RecordDelete3Day.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RecordDelete3Day.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataDefine/TsFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataDefine/TsFile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataManager/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/Constants.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataManager/Utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/DataManager/Utils.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/InitFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/InitFile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Redis/InitFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/Redis/InitFile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SearchTaskNew" beforeDir="false" afterPath="$PROJECT_DIR$/SearchTaskNew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerGRpcClient/GRpcClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerGRpcClient/GRpcClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerMessage/DeleteFromLocal_Stream.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerMessage/DeleteFromLocal_Stream.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerMessage/DeleteFromLocal_Stream.proto" beforeDir="false" afterPath="$PROJECT_DIR$/StorageMaintainerGRpc/StorageMaintainerMessage/DeleteFromLocal_Stream.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskDispatch/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/TaskDispatch/Constants.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskDispatch/DeleteTask.go" beforeDir="false" afterPath="$PROJECT_DIR$/TaskDispatch/DeleteTask.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deleteNew" beforeDir="false" afterPath="$PROJECT_DIR$/deleteNew" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
@@ -21,6 +41,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="GO_FMT" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -29,6 +50,24 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RunManager">
+    <configuration name="go build RecordDelete3Day" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="RecordDelete3Day" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="RecordDelete3Day" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build RecordDelete3Day" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
@@ -38,26 +77,71 @@
     <option name="LAST_COMMIT_MESSAGE" value="0601 update" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="592" y="339" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589980088415">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="618" y="213" key="#Notifications" timestamp="1591942581968">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="618" y="213" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1591942581968" />
+    <state x="444" y="251" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592203921523">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="444" y="251" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1592203921523" />
     <state x="592" y="339" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2048.1112@0.0.2048.1112" timestamp="1589980088415" />
-    <state x="278" y="0" key="CommitChangelistDialog2" timestamp="1590978462923">
+    <state x="446" y="140" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1592184975569">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="278" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1590978462922" />
-    <state x="495" y="109" key="FileChooserDialogImpl" timestamp="1590733893763">
+    <state x="446" y="140" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824@0.0.1536.824" timestamp="1592184975569" />
+    <state x="278" y="0" key="CommitChangelistDialog2" timestamp="1590979256868">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="495" y="109" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590733893763" />
+    <state x="278" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1590979256868" />
+    <state x="495" y="109" key="FileChooserDialogImpl" timestamp="1592471430816">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="495" y="109" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1592471430816" />
     <state x="660" y="147" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1589981532644" />
-    <state x="260" y="81" key="Vcs.Push.Dialog.v2" timestamp="1590979219676">
+    <state width="1485" height="238" key="GridCell.Tab.0.bottom" timestamp="1592472640009">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="260" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1590979219676" />
-    <state x="431" y="292" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1590979209581">
+    <state width="1485" height="238" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592472640009" />
+    <state width="1485" height="238" key="GridCell.Tab.0.center" timestamp="1592472640009">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="292" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1536.824@0.0.1536.824" timestamp="1590979209581" />
+    <state width="1485" height="238" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592472640009" />
+    <state width="1485" height="238" key="GridCell.Tab.0.left" timestamp="1592472640009">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1485" height="238" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592472640009" />
+    <state width="1485" height="238" key="GridCell.Tab.0.right" timestamp="1592472640009">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1485" height="238" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592472640009" />
+    <state width="1485" height="238" key="GridCell.Tab.1.bottom" timestamp="1592472640010">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1485" height="238" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592472640010" />
+    <state width="1485" height="238" key="GridCell.Tab.1.center" timestamp="1592472640010">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1485" height="238" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1592472640010" />
+    <state width="1485" height="238" key="GridCell.Tab.1.left" timestamp="1592472640009">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1485" height="238" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1592472640009" />
+    <state width="1485" height="238" key="GridCell.Tab.1.right" timestamp="1592472640010">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1485" height="238" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1592472640010" />
+    <state x="198" y="0" key="SettingsEditor" timestamp="1590980151557">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="198" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1590980151557" />
+    <state x="260" y="81" key="Vcs.Push.Dialog.v2" timestamp="1590979297111">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="260" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1590979297111" />
+    <state x="431" y="292" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1592188966726">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="292" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592188966726" />
   </component>
 </project>

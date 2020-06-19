@@ -27,7 +27,7 @@ type RecordFileInfo struct {
 	EndTime            int               `json:"EndTime" bson:"EndTime"`                       //文件结束时间
 	CreateTime         time.Time         `json:"CreateTime" bson:"CreateTime"`                 //创建时间, 手动生成
 	Status             MongoRecordStatus `json:"Status" bson:"Status"`                         //状态,
-	LockStatus         MongoLockStatus   `json:"LockStatus" bson:"LockStatus"`                 //锁状态,
+	LockStatus         int               `json:"LockStatus" bson:"LockStatus"`                 //锁状态,
 	FileSize           int32             `json:"FileSize" bson:"FileSize"`                     // 文件大小 , 单位KB
 	TaskID             string            `json:"TaskID" bson:"TaskID"`
 	MountPoint         string            `json:"MountPoint" bson:"MountPoint"`

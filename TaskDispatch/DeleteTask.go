@@ -27,6 +27,8 @@ var MongoDeleteCount int32
 var MongoWriteFailCount int32
 var MongoWriteCount int32
 
+var MongoFileCount int32
+
 var Date2 string
 
 func (manager *DeleteTask) Init() {
@@ -71,6 +73,7 @@ func (manager *DeleteTask) Init() {
 	manager.logger.Infof("MongoDeleteCount: [%v]", MongoDeleteCount)
 	manager.logger.Infof("MongoWriteFailCount: [%v]", MongoWriteFailCount)
 	manager.logger.Infof("MongoWriteCount: [%v]", MongoWriteCount)
+	manager.logger.Infof("MongoFileCount: [%v]", MongoFileCount)
 
 	DataManager.DeviceCount = 0
 	NoMongoCount = 0
@@ -80,6 +83,7 @@ func (manager *DeleteTask) Init() {
 	MongoDeleteCount = 0
 	MongoWriteFailCount = 0
 	MongoWriteCount = 0
+	MongoFileCount = 0
 
 	manager.TaskList = []DataDefine.RecordFileInfo{}
 }
@@ -107,10 +111,11 @@ func (manager *DeleteTask) goStartQueryMongoByMountPoint() {
 	var wg sync.WaitGroup
 	index := 0
 	srv := MongoDB.GetMongoRecordManager()
+	srv1 := MongoDB.GetMongoRecordManager1()
 	lens := len(srv.Srv)
 	for key, v := range taskmap {
 		wg.Add(1)
-		go manager.getNeedDeleteTask(key, v, &wg, srv.Srv[index])
+		go manager.getNeedDeleteTask(key, v, &wg, srv.Srv[index], srv1.Srv[index])
 		if index >= lens-1 {
 			index = 0
 		} else {
@@ -142,7 +147,7 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 		manager.logger.Errorf("Get MongoDB Record Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v], Date: [%v]", err1, v.ChannelInfo, mountpoint, table, date)
 		time.Sleep(time.Second * 3)
 		for {
-			err3, _ := MongoDB.QueryRecord(v.ChannelInfo, &dbResults, 0, srv)
+			err3, _, _ := MongoDB.QueryRecordbydate(v.ChannelInfo, dates, &dbResults, 0, srv)
 			if err3 != nil {
 				time.Sleep(time.Second * 3)
 				continue
@@ -164,6 +169,7 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 		var temp []DataDefine.RecordFileInfo
 		atomic.AddInt32(&AppendCount, 1)
 		manager.TaskListLock.Lock()
+		dbResults[0].LockStatus = int(v.Type)
 		manager.TaskList = append(manager.TaskList, dbResults[0])
 		manager.TaskListLock.Unlock()
 		temp = append(temp, dbResults[0])
@@ -172,6 +178,7 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 			if _, ok := temkeymp[task.MountPoint]; !ok {
 				atomic.AddInt32(&AppendCount, 1)
 				manager.TaskListLock.Lock()
+				task.LockStatus = int(v.Type)
 				manager.TaskList = append(manager.TaskList, task)
 				manager.TaskListLock.Unlock()
 				temp = append(temp, dbResults[0])
@@ -193,12 +200,14 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 					continue
 				} else {
 					atomic.AddInt32(&MongoDeleteCount, 1)
+					atomic.AddInt32(&MongoFileCount, int32(info.Removed))
 					manager.logger.Infof("Delete MongoDB Record Again Success, ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Count: [%v], Date: [%v]", v.ChannelInfo, mountpoint, table, time.Since(t).Seconds(), info.Removed, riqi)
 					break
 				}
 			}
 		} else {
 			atomic.AddInt32(&MongoDeleteCount, 1)
+			atomic.AddInt32(&MongoFileCount, int32(info.Removed))
 			manager.logger.Infof("Delete MongoDB Record Success, ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Count: [%v], Date: [%v]", v.ChannelInfo, mountpoint, table, time.Since(t).Seconds(), info.Removed, riqi)
 		}
 		for _, v := range temp {
@@ -230,13 +239,17 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 }
 
 //mongo中查询需要删除的数据
-func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManager.StorageDaysInfo, wg *sync.WaitGroup, srv MongoModular.MongoDBServ) {
+func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManager.StorageDaysInfo, wg *sync.WaitGroup, srv MongoModular.MongoDBServ, srv1 MongoModular.MongoDBServ) {
 	manager.logger.Infof("开启协程: [%v], len: [%v]", mountpoint, len(task))
 	defer wg.Done()
 	chResist := make(chan int, SearchNum)
 	for _, v := range task {
 		chResist <- 0
-		manager.goSearchTaskOnMongo2(v, mountpoint, srv, chResist)
+		if v.Type == 4 { //动存
+			manager.goSearchTaskOnMongo2(v, mountpoint, srv1, chResist)
+		} else if v.Type == 0 || v.Type == 9 { //全存
+			manager.goSearchTaskOnMongo2(v, mountpoint, srv1, chResist)
+		}
 		time.Sleep(time.Nanosecond)
 	}
 }
@@ -275,7 +288,7 @@ func (manager *DeleteTask) SendTask() {
 		for _, v := range server.task {
 			v.MountPoint += "/"
 			manager.logger.Infof("开始通知删除服务器[%v], ChannelInfoID[%v], MountPoint[%v]", key, v.ChannelInfoID, v.MountPoint)
-			pRespon, err := server.Con.Notify(v.ChannelInfoID, v.RecordRelativePath, v.MountPoint, Date2, v.ID.Hex(), v.StartTime)
+			pRespon, err := server.Con.Notify(v.ChannelInfoID, v.RecordRelativePath, v.MountPoint, Date2, v.ID.Hex(), v.StartTime, int32(v.LockStatus))
 			if nil != err {
 				manager.logger.Errorf("收到删除结果[%v]失败[%v], Error: [%v]", key, v, err)
 				count = 1
@@ -322,7 +335,7 @@ func (manager *DeleteTask) ReNotify(key string, date []DataDefine.RecordFileInfo
 			}
 			for _, v := range date {
 				manager.logger.Infof("重新开始通知删除服务器[%v], ChannelInfoID[%v], MountPoint[%v]", key1, v.ChannelInfoID, v.MountPoint)
-				pRespon, err := srv.Con.Notify(v.ChannelInfoID, v.RecordRelativePath, v.MountPoint, Date2, v.ID.Hex(), v.StartTime)
+				pRespon, err := srv.Con.Notify(v.ChannelInfoID, v.RecordRelativePath, v.MountPoint, Date2, v.ID.Hex(), v.StartTime, int32(v.LockStatus))
 				if nil != err {
 					manager.logger.Errorf("重新收到删除结果[%v]失败[%v], Error: [%v]", key1, v, err)
 					continue

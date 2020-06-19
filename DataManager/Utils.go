@@ -20,7 +20,7 @@ const IgnoreDays = 1
 
 var DeviceCount int32
 
-var CurDay int32
+var CurDay int32 = 7
 
 func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 	pThis.SliceChannelStorageInfoLock.Lock()
@@ -49,10 +49,10 @@ func (pThis *DataManager) GetAllStorageDays() []StorageDaysInfo {
 			continue
 		}
 		mountpoint += "/"
-		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.DeviceId, StorageDays: schemeInfo.StorageDays, Path: mountpoint})
+		Result = append(Result, StorageDaysInfo{ChannelInfo: chStorageInfo.DeviceId, StorageDays: schemeInfo.StorageDays, Path: mountpoint, Type: schemeInfo.StorageSchemeInfoType})
 		atomic.AddInt32(&DeviceCount, 1)
-		logger.Infof("Get Channel [%s] Storage Days [%d], MountPonit [%v] ok ", chStorageInfo.DeviceId, schemeInfo.StorageDays, mountpoint)
-		time.Sleep(time.Nanosecond)
+		logger.Infof("Get Channel [%s] Storage Days [%d], MountPonit [%v], Type [%v] ok ", chStorageInfo.DeviceId, schemeInfo.StorageDays, mountpoint, schemeInfo.StorageSchemeInfoType)
+		//time.Sleep(time.Nanosecond)
 	}
 	return Result
 }
