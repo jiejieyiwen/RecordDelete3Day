@@ -50,12 +50,6 @@ func (manager *DeleteTask) Init() {
 
 	manager.getDeleteServer()
 
-	//防止服务器时间出问题，取时间时和互联网对时一次，误差超过1小时当次不处理
-	for !DataManager.CheckNetworkTimeWithNTSC() {
-		manager.logger.Errorf("Check Time Sync Error, will continue. ")
-		time.Sleep(time.Second * 15)
-	}
-
 	manager.goStartQueryMongoByMountPoint()
 
 	if err := manager.goConnectDeleteServer(); err != nil {
@@ -126,18 +120,24 @@ func (manager *DeleteTask) goStartQueryMongoByMountPoint() {
 	manager.logger.Info("查询结束")
 }
 
-func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, mountpoint string, srv MongoModular.MongoDBServ, chxianliu chan int) {
-	manager.logger.Infof("开启挂载点[%v]查询子协程: [%v]", mountpoint, v.ChannelInfo)
-	_, err := DataManager.GetSubDayMorningTimeStamp(int(v.StorageDays))
-	if err != nil {
-		manager.logger.Errorf("Get SubDay MorningTimeStamp err: [%v] ", err)
-		<-chxianliu
-		return
-	}
+func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, mountpoint string, srv MongoModular.MongoDBServ, chxianliu chan int, temp *[]DataDefine.RecordFileInfo) {
 	var dbResults []DataDefine.RecordFileInfo
 
 	s := strings.Split(Date2, "-")
 	dates := s[0] + s[1] + s[2]
+
+	//if v.Type == 4 {
+	//	var sum int
+	//	for _, v := range []byte(v.ChannelInfo) {
+	//		sum += int(v)
+	//	}
+	//	sum = sum % 2
+	//	db := "CloudVideoInfo"
+	//	if sum == 1 {
+	//		db += "2"
+	//		srv.ChangeHandleDb(db)
+	//	}
+	//}
 
 	t1 := time.Now()
 	err1, table, date := MongoDB.QueryRecordbydate(v.ChannelInfo, dates, &dbResults, 0, srv)
@@ -166,13 +166,13 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 		atomic.AddInt32(&MongoCount, 1)
 		manager.logger.Infof("Get DBResult For ChannelID:[%v], len: [%v], 协程: [%v], 查询耗时: [%v], Table: [%v], Date: [%v]", v.ChannelInfo, len(dbResults), mountpoint, t2.Sub(t1).Seconds(), table, date)
 		temkeymp := make(map[string]string)
-		var temp []DataDefine.RecordFileInfo
+		//var temp []DataDefine.RecordFileInfo
 		atomic.AddInt32(&AppendCount, 1)
 		manager.TaskListLock.Lock()
 		dbResults[0].LockStatus = int(v.Type)
 		manager.TaskList = append(manager.TaskList, dbResults[0])
 		manager.TaskListLock.Unlock()
-		temp = append(temp, dbResults[0])
+		*temp = append(*temp, dbResults[0])
 		temkeymp[dbResults[0].MountPoint] = dbResults[0].MountPoint
 		for _, task := range dbResults {
 			if _, ok := temkeymp[task.MountPoint]; !ok {
@@ -181,59 +181,77 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 				task.LockStatus = int(v.Type)
 				manager.TaskList = append(manager.TaskList, task)
 				manager.TaskListLock.Unlock()
-				temp = append(temp, dbResults[0])
+				*temp = append(*temp, dbResults[0])
 				temkeymp[task.MountPoint] = task.MountPoint
 			}
 		}
-		t := time.Now()
-		info, err2, table, riqi := MongoDB.DeleteMongoTsAll(v.ChannelInfo, dates, srv)
-		if err2 != nil {
-			atomic.AddInt32(&MongoDeleteFailCount, 1)
-			manager.logger.Errorf("Delete MongoDB Record Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Date: [%v]", err2, v.ChannelInfo, mountpoint, table, time.Since(t).Seconds(), riqi)
-			time.Sleep(time.Second * 3)
-			for {
-				info, err4, table, riqi := MongoDB.DeleteMongoTsAll(v.ChannelInfo, dates, srv)
-				if err4 != nil {
-					atomic.AddInt32(&MongoDeleteFailCount, 1)
-					manager.logger.Errorf("Delete MongoDB Record Again Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Date: [%v]", err4, v.ChannelInfo, mountpoint, table, time.Since(t).Seconds(), riqi)
-					time.Sleep(time.Second * 3)
-					continue
-				} else {
-					atomic.AddInt32(&MongoDeleteCount, 1)
-					atomic.AddInt32(&MongoFileCount, int32(info.Removed))
-					manager.logger.Infof("Delete MongoDB Record Again Success, ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Count: [%v], Date: [%v]", v.ChannelInfo, mountpoint, table, time.Since(t).Seconds(), info.Removed, riqi)
-					break
-				}
+	}
+	<-chxianliu
+}
+
+func (manager *DeleteTask) goSearchTaskOnMongo3(mountpoint string, srv MongoModular.MongoDBServ, chxianliu chan int, v DataDefine.RecordFileInfo) {
+	s := strings.Split(Date2, "-")
+	dates := s[0] + s[1] + s[2]
+
+	//if v.LockStatus == 4 {
+	//	var sum int
+	//	for _, v := range []byte(v.ChannelInfoID) {
+	//		sum += int(v)
+	//	}
+	//	sum = sum % 2
+	//	db := "CloudVideoInfo"
+	//	if sum == 1 {
+	//		db += "2"
+	//		srv.ChangeHandleDb(db)
+	//	}
+	//}
+
+	t := time.Now()
+	info, err2, table, riqi := MongoDB.DeleteMongoTsAll(v.ChannelInfoID, dates, srv)
+	if err2 != nil {
+		atomic.AddInt32(&MongoDeleteFailCount, 1)
+		manager.logger.Errorf("Delete MongoDB Record Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Date: [%v]", err2, v.ChannelInfoID, mountpoint, table, time.Since(t).Seconds(), riqi)
+		time.Sleep(time.Second * 3)
+		for {
+			info, err4, table, riqi := MongoDB.DeleteMongoTsAll(v.ChannelInfoID, dates, srv)
+			if err4 != nil {
+				atomic.AddInt32(&MongoDeleteFailCount, 1)
+				manager.logger.Errorf("Delete MongoDB Record Again Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Date: [%v]", err4, v.ChannelInfoID, mountpoint, table, time.Since(t).Seconds(), riqi)
+				time.Sleep(time.Second * 3)
+				continue
+			} else {
+				atomic.AddInt32(&MongoDeleteCount, 1)
+				atomic.AddInt32(&MongoFileCount, int32(info.Removed))
+				manager.logger.Infof("Delete MongoDB Record Again Success, ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Count: [%v], Date: [%v]", v.ChannelInfoID, mountpoint, table, time.Since(t).Seconds(), info.Removed, riqi)
+				break
 			}
-		} else {
-			atomic.AddInt32(&MongoDeleteCount, 1)
-			atomic.AddInt32(&MongoFileCount, int32(info.Removed))
-			manager.logger.Infof("Delete MongoDB Record Success, ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Count: [%v], Date: [%v]", v.ChannelInfo, mountpoint, table, time.Since(t).Seconds(), info.Removed, riqi)
 		}
-		for _, v := range temp {
-			errs, t := MongoDB.WriteMongoFile(v, srv)
-			if errs != nil {
+	} else {
+		atomic.AddInt32(&MongoDeleteCount, 1)
+		atomic.AddInt32(&MongoFileCount, int32(info.Removed))
+		manager.logger.Infof("Delete MongoDB Record Success, ChannelId: [%v], 协程: [%v], Table: [%v], Time: [%v], Count: [%v], Date: [%v]", v.ChannelInfoID, mountpoint, table, time.Since(t).Seconds(), info.Removed, riqi)
+	}
+	errs, table1 := MongoDB.WriteMongoFile(v, srv)
+	if errs != nil {
+		atomic.AddInt32(&MongoWriteFailCount, 1)
+		manager.logger.Errorf("Write MongoDB Record Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v]", errs, v.ChannelInfoID, mountpoint, table1)
+		time.Sleep(time.Second * 5)
+		for {
+			er, tt := MongoDB.WriteMongoFile(v, srv)
+			if er != nil {
 				atomic.AddInt32(&MongoWriteFailCount, 1)
-				manager.logger.Errorf("Write MongoDB Record Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v]", errs, v.ChannelInfoID, mountpoint, t)
 				time.Sleep(time.Second * 5)
-				for {
-					er, tt := MongoDB.WriteMongoFile(v, srv)
-					if er != nil {
-						atomic.AddInt32(&MongoWriteFailCount, 1)
-						time.Sleep(time.Second * 5)
-						manager.logger.Errorf("Write MongoDB Record Again Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v]", er, v.ChannelInfoID, mountpoint, tt)
-						continue
-					} else {
-						atomic.AddInt32(&MongoWriteCount, 1)
-						manager.logger.Infof("Write MongoDB Record Again Success, ChannelId: [%v], 协程: [%v], Table: [%v]", v.ChannelInfoID, mountpoint, tt)
-						break
-					}
-				}
+				manager.logger.Errorf("Write MongoDB Record Again Error: [%v], ChannelId: [%v], 协程: [%v], Table: [%v]", er, v.ChannelInfoID, mountpoint, tt)
+				continue
 			} else {
 				atomic.AddInt32(&MongoWriteCount, 1)
-				manager.logger.Infof("Write MongoDB Record Success, ChannelId: [%v], 协程: [%v], Table: [%v]", v.ChannelInfoID, mountpoint, t)
+				manager.logger.Infof("Write MongoDB Record Again Success, ChannelId: [%v], 协程: [%v], Table: [%v]", v.ChannelInfoID, mountpoint, tt)
+				break
 			}
 		}
+	} else {
+		atomic.AddInt32(&MongoWriteCount, 1)
+		manager.logger.Infof("Write MongoDB Record Success, ChannelId: [%v], 协程: [%v], Table: [%v]", v.ChannelInfoID, mountpoint, table1)
 	}
 	<-chxianliu
 }
@@ -242,13 +260,28 @@ func (manager *DeleteTask) goSearchTaskOnMongo2(v DataManager.StorageDaysInfo, m
 func (manager *DeleteTask) getNeedDeleteTask(mountpoint string, task []DataManager.StorageDaysInfo, wg *sync.WaitGroup, srv MongoModular.MongoDBServ, srv1 MongoModular.MongoDBServ) {
 	manager.logger.Infof("开启协程: [%v], len: [%v]", mountpoint, len(task))
 	defer wg.Done()
-	chResist := make(chan int, SearchNum)
+	chResist := make(chan int, 20)
+	var temp []DataDefine.RecordFileInfo
+
 	for _, v := range task {
 		chResist <- 0
 		if v.Type == 4 { //动存
-			manager.goSearchTaskOnMongo2(v, mountpoint, srv1, chResist)
+			manager.goSearchTaskOnMongo2(v, mountpoint, srv, chResist, &temp)
 		} else if v.Type == 0 || v.Type == 9 { //全存
-			manager.goSearchTaskOnMongo2(v, mountpoint, srv1, chResist)
+			manager.goSearchTaskOnMongo2(v, mountpoint, srv1, chResist, &temp)
+		}
+		time.Sleep(time.Nanosecond)
+	}
+
+	manager.logger.Infof("Temp Len Is: [%v]", len(temp))
+
+	chResist1 := make(chan int, 20)
+	for _, v := range temp {
+		chResist1 <- 0
+		if v.LockStatus == 4 { //动存
+			manager.goSearchTaskOnMongo3(mountpoint, srv, chResist1, v)
+		} else if v.LockStatus == 0 || v.LockStatus == 9 { //全存
+			manager.goSearchTaskOnMongo3(mountpoint, srv1, chResist1, v)
 		}
 		time.Sleep(time.Nanosecond)
 	}

@@ -11,6 +11,7 @@ import (
 	"iPublic/EnvLoad"
 	"iPublic/LoggerModular"
 	"iPublic/RedisModular"
+	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -25,17 +26,6 @@ var Day int
 func main() {
 	logger := LoggerModular.GetLogger()
 
-	if len(os.Args) > 1 {
-		for index, k := range os.Args {
-			switch k {
-			case "-SearchNum":
-				{
-					TaskDispatch.SearchNum, _ = strconv.Atoi(os.Args[index+1])
-				}
-			}
-		}
-	}
-
 	config := Config.GetConfig()
 	if err := Config.ReadConfig(); err != nil {
 		logger.Error(err)
@@ -49,9 +39,9 @@ func main() {
 	EnvLoad.GetServiceManager().SetStatus(EnvLoad.ServiceStatusOK)
 	go EnvLoad.GetServiceManager().RegSelf()
 
-	DataManager.CurDay = 7
+	DataManager.CurDay = 1
 	currentTime := time.Now()
-	oldTime := currentTime.AddDate(0, 0, -8)
+	oldTime := currentTime.AddDate(0, 0, -3)
 	MongoDB.Date = oldTime.Format("2006-01-2")
 	TaskDispatch.Date2 = oldTime.Format("2006-01-02")
 
@@ -87,12 +77,6 @@ func main() {
 	}
 
 	_, err = c.AddFunc("00 15 * * *", initDataManager30)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	_, err = c.AddFunc("00 16 * * *", initDataManager10)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -153,20 +137,6 @@ func initDataManager7() {
 	TaskDispatch.GetTaskManager().Init()
 }
 
-func initDataManager10() {
-	DataManager.CurDay = 10
-	currentTime := time.Now()
-	oldTime := currentTime.AddDate(0, 0, -11)
-	MongoDB.Date = oldTime.Format("2006-01-2")
-	TaskDispatch.Date2 = oldTime.Format("2006-01-02")
-	//data
-	if err := DataManager.GetDataManager().Init(); err != nil {
-		return
-	}
-	//mongo
-	TaskDispatch.GetTaskManager().Init()
-}
-
 func initDataManager30() {
 	DataManager.CurDay = 30
 	currentTime := time.Now()
@@ -181,7 +151,7 @@ func initDataManager30() {
 	TaskDispatch.GetTaskManager().Init()
 }
 
-func main23() {
+func main22() {
 	logger := LoggerModular.GetLogger()
 
 	config := Config.GetConfig()
@@ -205,10 +175,6 @@ func main23() {
 			case "-Day":
 				{
 					Day, _ = strconv.Atoi(os.Args[index+1])
-				}
-			case "-SearchNum":
-				{
-					TaskDispatch.SearchNum, _ = strconv.Atoi(os.Args[index+1])
 				}
 			}
 		}
@@ -257,17 +223,15 @@ func main3() {
 	}
 }
 
-func main11() {
-	//s := "redis://:nAgzyy7sIc1@10.0.1.228:6381,10.0.1.210:6381,10.0.1.229:6381/3?PoolSize=5"
-	//u, err := url.Parse(s)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//fmt.Println(u.Host)
-	//fmt.Println(u.Fragment)
-
-	times := time.Now()
-	oldtime := times.AddDate(0, 0, -31)
-	fmt.Println(oldtime)
+func main123() {
+	s := "redis://:nAgzyy7sIc1@10.0.1.228:6381,10.0.1.210:6381,10.0.1.229:6381/3?PoolSize=5"
+	u, err := url.Parse(s)
+	if err != nil {
+		panic(err)
+	}
+	p, _ := u.User.Password()
+	fmt.Println(u.Host)
+	fmt.Println(p)
+	fmt.Println(u.Path)
+	fmt.Println(u.Fragment)
 }

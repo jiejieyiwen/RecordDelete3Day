@@ -8,6 +8,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"iPublic/LoggerModular"
 	"iPublic/MongoModular"
+	"time"
 )
 
 type RecordFileMongo struct {
@@ -33,6 +34,7 @@ func init() {
 func (record *RecordFileMongo) Init() error {
 	logger := LoggerModular.GetLogger()
 	MongoDBURL := Config.GetConfig().MongoDBConfig.MongoDBURLMongo
+	//MongoDBURL := "mongodb://mj_log:SwhRdslmS61A9c3P@10.0.3.22:27017,10.0.3.23:27017,10.0.3.24:27017/mj_log?authSource=mj_log&maxPoolSize=100"
 	//MongoDBURL = "mongodb://mj_ya_admin:EkJcQeOP$bGh8IYC@127.0.0.1:15677/mj_log?authSource=admin&maxPoolSize=100"
 
 	//动存
@@ -40,7 +42,17 @@ func (record *RecordFileMongo) Init() error {
 		var srv MongoModular.MongoDBServ
 		if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err != nil {
 			logger.Errorf("Init Mongo Connect Err: [%v]. ", err)
-			return err
+			for {
+				if err1 := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err1 != nil {
+					logger.Errorf("ReInit Mongo Connect Err: [%v]. ", err1)
+					time.Sleep(time.Second)
+					continue
+				} else {
+					recordManager.Srv = append(recordManager.Srv, srv)
+					logger.Infof("ReInit Mongo Connect over url: [%v] ", MongoDBURL)
+					break
+				}
+			}
 		} else {
 			recordManager.Srv = append(recordManager.Srv, srv)
 			logger.Infof("Init Mongo Connect over url: [%v] ", MongoDBURL)
@@ -49,34 +61,28 @@ func (record *RecordFileMongo) Init() error {
 
 	//全存
 	MongoDBURL = Config.GetConfig().PullStorageConfig.MongoDBURLMongo
+	//MongoDBURL = "mongodb://mj_log:SwhRdslmS61A9c3P@10.0.3.27:27017,10.0.3.28:27017,10.0.3.29:27017/mj_log?authSource=mj_log&maxPoolSize=100"
 	for i := 0; i < 100; i++ {
 		var srv MongoModular.MongoDBServ
 		if err := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err != nil {
 			logger.Errorf("Init Pull Mongo Connect Err: [%v]. ", err)
-			return err
+			for {
+				if err1 := MongoModular.GetMongoDBHandlerWithURL(MongoDBURL, &srv); err1 != nil {
+					logger.Errorf("ReInit Mongo Connect Err: [%v]. ", err1)
+					time.Sleep(time.Second)
+					continue
+				} else {
+					recordManager1.Srv = append(recordManager1.Srv, srv)
+					logger.Infof("ReInit Pull Mongo Connect over url: [%v] ", MongoDBURL)
+					break
+				}
+			}
 		} else {
 			recordManager1.Srv = append(recordManager1.Srv, srv)
 			logger.Infof("Init Pull Mongo Connect over url: [%v] ", MongoDBURL)
 		}
 	}
 	return nil
-}
-
-func QueryRecord(Channel string, tpl interface{}, maxTs int, srv MongoModular.MongoDBServ) (err error, table string) {
-	logger := LoggerModular.GetLogger().WithFields(logrus.Fields{
-		"MaxCount": maxTs,
-		"Channel":  Channel,
-	})
-	defer func() {
-		if err := recover(); err != nil {
-			logger.Errorf("Panic in QueryRecord: [%s]", err)
-		}
-	}()
-	baseFilter := []interface{}{bson.M{"ChannelInfoID": Channel}}
-	filter := bson.M{"$and": baseFilter}
-	Table := "RecordFileInfo_"
-	Table = Table + Date
-	return srv.FindAll(Table, filter, RecordDefaultSort, maxTs, 0, tpl), Table
 }
 
 func QueryRecordbydate(Channel, date string, tpl interface{}, maxTs int, srv MongoModular.MongoDBServ) (err error, table, data string) {
